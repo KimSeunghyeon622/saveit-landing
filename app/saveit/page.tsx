@@ -164,9 +164,11 @@ function Button({
 function Card({
   className,
   children,
+  style,
 }: {
   className?: string;
   children: React.ReactNode;
+  style?: React.CSSProperties;
 }) {
   return (
     <div
@@ -174,12 +176,13 @@ function Card({
         "rounded-[20px] bg-[var(--c-surface)] border border-[var(--c-border)]",
         className
       )}
-      style={{ boxShadow: "var(--sh-sm)" }}
+      style={{ boxShadow: "var(--sh-sm)", ...style }}
     >
       {children}
     </div>
   );
 }
+
 
 function Pill({ children, tone = "neutral" }: { children: React.ReactNode; tone?: "neutral" | "green" | "amber" }) {
   const cls =
