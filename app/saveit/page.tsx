@@ -35,11 +35,6 @@ const TOKENS = {
   radius: { lg: 28 },
 };
 
-const BRAND = {
-  name: "세이브잇",
-  phone: "01056367386",
-};
-
 const EASE_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const fadeUp = {
   initial: { opacity: 0, y: 14 },
@@ -539,7 +534,7 @@ export default function SaveItLanding() {
           <div className="grid gap-10 md:grid-cols-[1fr_2fr]">
             <div className="space-y-3 text-[13px] text-[var(--c-muted)]">
               <a
-                href="/saveit"
+                href="/saveit/terms"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-[14px] font-[700] text-[var(--c-ink)] transition-colors hover:text-[var(--c-accent)]"
@@ -547,7 +542,7 @@ export default function SaveItLanding() {
                 이용약관
               </a>
               <a
-                href="/saveit"
+                href="/saveit/privacy"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-[14px] font-[700] text-[var(--c-ink)] transition-colors hover:text-[var(--c-accent)]"
