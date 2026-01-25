@@ -104,13 +104,15 @@ function scrollToId(id: string) {
   if (!el) return;
   el.scrollIntoView({ behavior: "smooth", block: "start" });
 }
+const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 const fadeUp = {
   initial: { opacity: 0, y: 14 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-60px" },
-  transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+  transition: { duration: 0.5, ease: EASE_OUT },
 };
+
 
 function Button({
   variant = "primary",
