@@ -1,11 +1,11 @@
-﻿"use client";
+﻿
+"use client";
 
 import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
   BadgeCheck,
-  Check,
   Clock,
   CreditCard,
   Leaf,
@@ -13,7 +13,6 @@ import {
   MessageCircle,
   Package,
   Phone,
-  Shield,
   Sparkles,
   Wallet,
 } from "lucide-react";
@@ -84,6 +83,95 @@ function scrollToId(id: string) {
   el.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+function svgDataUri(svg: string) {
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+}
+
+const HERO_BG = svgDataUri(`
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00D563" stop-opacity="0.28" />
+      <stop offset="45%" stop-color="#FFD56A" stop-opacity="0.22" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.0" />
+    </linearGradient>
+    <radialGradient id="r1" cx="0.2" cy="0.1" r="0.6">
+      <stop offset="0%" stop-color="#00D563" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="r2" cx="0.85" cy="0.2" r="0.5">
+      <stop offset="0%" stop-color="#FFD56A" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="#F6FBF8" />
+  <rect width="1600" height="900" fill="url(#g1)" />
+  <circle cx="220" cy="160" r="220" fill="url(#r1)" />
+  <circle cx="1300" cy="220" r="240" fill="url(#r2)" />
+  <g opacity="0.25">
+    <circle cx="420" cy="640" r="140" fill="#00D563" />
+    <circle cx="1180" cy="620" r="160" fill="#FFD56A" />
+  </g>
+</svg>
+`);
+const STEP_IMAGES = [
+  svgDataUri(`
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420">
+  <rect width="640" height="420" fill="#F5F7FB" />
+  <rect x="32" y="32" width="576" height="356" rx="28" fill="#FFFFFF" stroke="#DCE2EE" />
+  <text x="64" y="120" font-size="36" font-family="Arial" fill="#0D1220">STEP 01</text>
+  <rect x="64" y="160" width="260" height="18" rx="9" fill="#00D563" />
+  <rect x="64" y="200" width="220" height="12" rx="6" fill="#D7DEE9" />
+  <rect x="64" y="224" width="260" height="12" rx="6" fill="#D7DEE9" />
+  <rect x="64" y="248" width="180" height="12" rx="6" fill="#D7DEE9" />
+</svg>
+`),
+  svgDataUri(`
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420">
+  <rect width="640" height="420" fill="#F5F7FB" />
+  <rect x="32" y="32" width="576" height="356" rx="28" fill="#FFFFFF" stroke="#DCE2EE" />
+  <text x="64" y="120" font-size="36" font-family="Arial" fill="#0D1220">STEP 02</text>
+  <circle cx="520" cy="196" r="54" fill="#FFD56A" />
+  <rect x="64" y="170" width="320" height="16" rx="8" fill="#00D563" />
+  <rect x="64" y="210" width="260" height="12" rx="6" fill="#D7DEE9" />
+  <rect x="64" y="234" width="220" height="12" rx="6" fill="#D7DEE9" />
+</svg>
+`),
+  svgDataUri(`
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420">
+  <rect width="640" height="420" fill="#F5F7FB" />
+  <rect x="32" y="32" width="576" height="356" rx="28" fill="#FFFFFF" stroke="#DCE2EE" />
+  <text x="64" y="120" font-size="36" font-family="Arial" fill="#0D1220">STEP 03</text>
+  <rect x="64" y="170" width="420" height="16" rx="8" fill="#00D563" />
+  <rect x="64" y="210" width="220" height="12" rx="6" fill="#D7DEE9" />
+  <rect x="64" y="234" width="260" height="12" rx="6" fill="#D7DEE9" />
+  <rect x="64" y="258" width="180" height="12" rx="6" fill="#D7DEE9" />
+</svg>
+`),
+];
+
+const QR_PLACEHOLDER = svgDataUri(`
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320">
+  <rect width="320" height="320" fill="#FFFFFF" stroke="#DCE2EE" />
+  <rect x="24" y="24" width="80" height="80" fill="#0D1220" />
+  <rect x="216" y="24" width="80" height="80" fill="#0D1220" />
+  <rect x="24" y="216" width="80" height="80" fill="#0D1220" />
+  <rect x="52" y="52" width="24" height="24" fill="#FFFFFF" />
+  <rect x="244" y="52" width="24" height="24" fill="#FFFFFF" />
+  <rect x="52" y="244" width="24" height="24" fill="#FFFFFF" />
+  <g fill="#0D1220">
+    <rect x="140" y="64" width="24" height="24" />
+    <rect x="168" y="92" width="24" height="24" />
+    <rect x="124" y="120" width="24" height="24" />
+    <rect x="196" y="132" width="24" height="24" />
+    <rect x="156" y="164" width="24" height="24" />
+    <rect x="104" y="168" width="24" height="24" />
+    <rect x="188" y="188" width="24" height="24" />
+    <rect x="132" y="208" width="24" height="24" />
+  </g>
+  <text x="160" y="300" font-size="20" text-anchor="middle" font-family="Arial" fill="#5B6478">APP QR</text>
+</svg>
+`);
 function Button({
   variant = "primary",
   className,
@@ -214,10 +302,6 @@ export default function SaveItLandingTokenized() {
         h1, h2, h3 { font-family: ${TOKENS.typography.font.display}, ${TOKENS.typography.font.body}, ui-sans-serif; }
       `}</style>
 
-      {/* Background accents */}
-      <div className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[520px] w-[520px] -translate-x-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(0,213,99,0.18), rgba(255,255,255,0))" }} />
-      <div className="pointer-events-none absolute right-[-120px] top-[280px] -z-10 h-[380px] w-[380px] rounded-full" style={{ background: "radial-gradient(circle, rgba(255,213,106,0.22), rgba(255,255,255,0))" }} />
-
       {/* NAV */}
       <header className="sticky top-0 z-40 border-b border-[var(--c-border)] bg-[rgba(250,250,250,0.78)] backdrop-blur">
         <div className="mx-auto flex items-center justify-between px-4 py-3" style={{ maxWidth: MAX }}>
@@ -236,14 +320,14 @@ export default function SaveItLandingTokenized() {
           </div>
 
           <nav className="hidden items-center gap-6 text-[14px] md:flex" style={{ color: "var(--c-muted)" }}>
-            <button className="hover:text-[var(--c-ink)]" onClick={() => scrollToId("how")}>
-              운영 방식
+            <button className="hover:text-[var(--c-ink)]" onClick={() => scrollToId("process")}>
+              이용 방법
             </button>
-            <button className="hover:text-[var(--c-ink)]" onClick={() => scrollToId("proof")}>
-              신뢰 요소
+            <button className="hover:text-[var(--c-ink)]" onClick={() => scrollToId("benefits")}>
+              입점 메리트
             </button>
-            <button className="hover:text-[var(--c-ink)]" onClick={() => scrollToId("pricing")}>
-              가격 정책
+            <button className="hover:text-[var(--c-ink)]" onClick={() => scrollToId("faq")}>
+              FAQ
             </button>
             <Button variant="primary" onClick={() => scrollToId("apply")}>
               입점 신청 <ArrowRight className="h-4 w-4" />
@@ -259,7 +343,14 @@ export default function SaveItLandingTokenized() {
       </header>
 
       {/* HERO */}
-      <section className="py-20">
+      <section
+        className="relative overflow-hidden py-20"
+        style={{
+          backgroundImage: `linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.78)), url(${HERO_BG})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
         <div className="mx-auto grid gap-10 px-4 md:grid-cols-2 md:items-center" style={{ maxWidth: MAX }}>
           <motion.div {...fadeUp} className="space-y-6">
             <div className="flex flex-wrap items-center gap-2">
@@ -279,35 +370,20 @@ export default function SaveItLandingTokenized() {
                 color: "var(--c-ink-strong)",
               }}
             >
-              소비기한 임박 상품,
+              열심히 준비한 음식,
               <br className="hidden sm:block" />
-              버리지 말고 예약 판매로 매출을 만드세요.
+              제 값 받고 파세요
             </h1>
+
+            <div className="space-y-2 text-[17px]" style={{ color: "var(--c-ink-strong)" }}>
+              <p>음식 재고, 폐기 걱정은 이제 그만</p>
+              <p>매출도 높이고, 지구도 지킬 수 있어요!</p>
+            </div>
 
             <p className="max-w-[46ch]" style={{ color: "var(--c-muted)" }}>
               Save it은 소비기한이 가까운 신선 식품을 저렴하게 판매할 수 있도록 돕는 판매중개
               플랫폼입니다. 고객은 예약하고, 매장은 준비만 하면 됩니다.
             </p>
-
-            <div className="grid gap-3 sm:grid-cols-3">
-              {[
-                { icon: <Package className="h-4 w-4" />, t: "등록 1분", d: "상품/가격 입력만" },
-                { icon: <MessageCircle className="h-4 w-4" />, t: "예약 알림", d: "고객 자동 안내" },
-                { icon: <Clock className="h-4 w-4" />, t: "판매만 집중", d: "정산은 자동 처리" },
-              ].map((x, i) => (
-                <Card key={i} className="p-5" style={{ boxShadow: "none" }}>
-                  <div className="flex items-center gap-2 text-[14px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
-                    <span className="grid h-8 w-8 place-items-center rounded-[20px]" style={{ background: "rgba(0,213,99,0.14)" }}>
-                      {x.icon}
-                    </span>
-                    {x.t}
-                  </div>
-                  <div className="mt-1 text-[13px]" style={{ color: "var(--c-muted)" }}>
-                    {x.d}
-                  </div>
-                </Card>
-              ))}
-            </div>
 
             <div className="flex flex-wrap items-center gap-3">
               <Button variant="primary" onClick={() => scrollToId("apply")}>
@@ -362,52 +438,70 @@ export default function SaveItLandingTokenized() {
         </div>
       </section>
 
-      {/* HOW (3 steps) */}
-      <section id="how" className="py-20">
-        <div className="mx-auto px-4" style={{ maxWidth: MAX }}>
-          <motion.div {...fadeUp} className="flex items-end justify-between gap-6">
-            <div>
-              <h2
-                style={{
-                  fontSize: TOKENS.typography.scale.h2.size,
-                  lineHeight: TOKENS.typography.scale.h2.lineHeight,
-                  fontWeight: TOKENS.typography.scale.h2.weight as any,
-                  color: "var(--c-ink-strong)",
-                }}
-              >
-                운영은 단 3단계입니다.
-              </h2>
-              <p className="mt-2 text-[13px]" style={{ color: "var(--c-muted)" }}>
-                복잡한 기능 없이 필요한 것만 담았습니다.
-              </p>
-            </div>
-            <div className="hidden md:flex items-center gap-2">
-              <Pill tone="neutral">매장 결제</Pill>
-              <Pill tone="green">예약 판매</Pill>
+      {/* PROCESS */}
+      <section id="process" className="py-20">
+        <div className="mx-auto grid gap-8 px-4 md:grid-cols-[0.95fr_1.05fr] md:items-center" style={{ maxWidth: MAX }}>
+          <motion.div {...fadeUp}>
+            <h2
+              style={{
+                fontSize: TOKENS.typography.scale.h2.size,
+                lineHeight: TOKENS.typography.scale.h2.lineHeight,
+                fontWeight: TOKENS.typography.scale.h2.weight as any,
+                color: "var(--c-ink-strong)",
+              }}
+            >
+              앱에 재고 제품을 등록만하면, 영업준비 끝!
+            </h2>
+            <p className="mt-2 text-[13px]" style={{ color: "var(--c-muted)" }}>
+              복잡하지 않아요. 1분이면 충분합니다.
+            </p>
+
+            <div className="mt-6 grid gap-3">
+              {[
+                { icon: <Package className="h-4 w-4" />, t: "1분 등록", d: "상품/가격/마감만 입력" },
+                { icon: <MessageCircle className="h-4 w-4" />, t: "자동 알림", d: "고객에게 즉시 예약 안내" },
+                { icon: <Clock className="h-4 w-4" />, t: "운영 간소화", d: "판매와 픽업만 집중" },
+              ].map((x, i) => (
+                <Card key={i} className="p-5" style={{ boxShadow: "none" }}>
+                  <div className="flex items-center gap-2 text-[14px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
+                    <span className="grid h-8 w-8 place-items-center rounded-[20px]" style={{ background: "rgba(0,213,99,0.14)" }}>
+                      {x.icon}
+                    </span>
+                    {x.t}
+                  </div>
+                  <div className="mt-1 text-[13px]" style={{ color: "var(--c-muted)" }}>
+                    {x.d}
+                  </div>
+                </Card>
+              ))}
             </div>
           </motion.div>
 
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-3">
             {[
-              { n: "01", icon: <Package className="h-4 w-4" />, t: "오늘 상품 등록", d: "수량/가격/마감만 입력" },
-              { n: "02", icon: <MessageCircle className="h-4 w-4" />, t: "예약 알림 확인", d: "예약 발생 시 자동 안내" },
-              { n: "03", icon: <CreditCard className="h-4 w-4" />, t: "판매 후 매장 결제", d: "정산·수수료는 자동 처리" },
-            ].map((s, i) => (
-              <motion.div key={i} {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.05 * i }}>
-                <Card className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="text-[13px] font-[650]" style={{ color: "var(--c-muted)" }}>
-                      {s.n}
+              {
+                title: "등록",
+                desc: "오늘의 재고를 입력",
+              },
+              {
+                title: "예약",
+                desc: "알림을 받은 고객이 예약",
+              },
+              {
+                title: "판매",
+                desc: "매장 결제로 간단 마감",
+              },
+            ].map((step, i) => (
+              <motion.div key={step.title} {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.05 * i }}>
+                <Card className="overflow-hidden">
+                  <img src={STEP_IMAGES[i]} alt={`Process step ${i + 1}`} className="h-[180px] w-full object-cover" />
+                  <div className="p-4">
+                    <div className="text-[15px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
+                      {`${i + 1}. ${step.title}`}
                     </div>
-                    <div className="grid h-9 w-9 place-items-center rounded-[20px]" style={{ background: "rgba(0,213,99,0.14)", color: "var(--c-ink-strong)" }}>
-                      {s.icon}
+                    <div className="mt-1 text-[13px]" style={{ color: "var(--c-muted)" }}>
+                      {step.desc}
                     </div>
-                  </div>
-                  <div className="mt-3 text-[15px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
-                    {s.t}
-                  </div>
-                  <div className="mt-1 text-[13px]" style={{ color: "var(--c-muted)" }}>
-                    {s.d}
                   </div>
                 </Card>
               </motion.div>
@@ -415,11 +509,10 @@ export default function SaveItLandingTokenized() {
           </div>
         </div>
       </section>
-
-      {/* PROOF / SAFETY */}
-      <section id="proof" className="py-20" style={{ background: "rgba(13,18,32,0.03)" }}>
+      {/* BENEFITS */}
+      <section id="benefits" className="py-20" style={{ background: "rgba(13,18,32,0.03)" }}>
         <div className="mx-auto px-4" style={{ maxWidth: MAX }}>
-          <motion.div {...fadeUp} className="grid gap-6 md:grid-cols-[1fr_1.1fr] md:items-start">
+          <motion.div {...fadeUp} className="grid gap-8 md:grid-cols-[1fr_1.15fr] md:items-start">
             <div>
               <h2
                 style={{
@@ -429,18 +522,45 @@ export default function SaveItLandingTokenized() {
                   color: "var(--c-ink-strong)",
                 }}
               >
-                신뢰 요소로 불안함을 줄였습니다.
+                다양한 자영업 경험들을 바탕으로
+                <br className="hidden sm:block" />
+                오직 업주 입장에서 편의성을 최대로 높였어요
               </h2>
               <p className="mt-3 max-w-[46ch]" style={{ color: "var(--c-muted)" }}>
-                운영 부담을 줄이고, 가격/정산/고객 대응을 더 투명하게 관리합니다.
+                운영자의 고민을 줄이고, 매출과 회전율을 높이기 위한 기능만 담았습니다.
               </p>
+
+              <div className="mt-6 grid gap-3">
+                {["현금흐름 안정", "운영 간소화", "고객 확장"].map((t) => (
+                  <Pill key={t} tone="green">
+                    {t}
+                  </Pill>
+                ))}
+              </div>
             </div>
 
             <div className="grid gap-4">
               {[
-                { icon: <Shield className="h-4 w-4" />, t: "정산 스트레스 최소화", d: "정산/수수료 정책은 투명하게 공개 (내용 입력)" },
-                { icon: <Wallet className="h-4 w-4" />, t: "수수료 자동 처리", d: "판매 금액 기준 자동 정산 (내용 입력)" },
-                { icon: <Check className="h-4 w-4" />, t: "운영은 간단하게", d: "등록-예약-판매 3단계, 불필요한 기능 제거" },
+                {
+                  icon: <Wallet className="h-4 w-4" />,
+                  t: "일일 정산",
+                  d: "판매하신 금액을 모아두고 월단위로 정산하지 않아요. 판매 즉시 정산되어 현금 유동성 걱정이 없어요!",
+                },
+                {
+                  icon: <MessageCircle className="h-4 w-4" />,
+                  t: "판매 편의",
+                  d: "소비자는 내 가게 모든 제품, 혹은 특정 제품에 즉시 알람을 받고 구매 예약을 신청할 수 있어요!",
+                },
+                {
+                  icon: <CreditCard className="h-4 w-4" />,
+                  t: "저렴한 비용",
+                  d: "판매 금액에 대한 수수료 외, 가입비 / 입점료 / 홍보비 등 추가 지출이 없어요.",
+                },
+                {
+                  icon: <Sparkles className="h-4 w-4" />,
+                  t: "추가 고객",
+                  d: "홍보는 자연스럽게, 신규 고객 전환과 외부 고객 유입을 돕습니다.",
+                },
               ].map((x, i) => (
                 <Card key={i} className="p-6" style={{ boxShadow: "none" }}>
                   <div className="flex items-center gap-2 text-[15px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
@@ -459,81 +579,8 @@ export default function SaveItLandingTokenized() {
         </div>
       </section>
 
-      {/* PRICING */}
-      <section id="pricing" className="py-20">
-        <div className="mx-auto grid gap-6 px-4 md:grid-cols-[1.15fr_0.85fr] md:items-start" style={{ maxWidth: MAX }}>
-          <motion.div {...fadeUp}>
-            <h2
-              style={{
-                fontSize: TOKENS.typography.scale.h2.size,
-                lineHeight: TOKENS.typography.scale.h2.lineHeight,
-                fontWeight: TOKENS.typography.scale.h2.weight as any,
-                color: "var(--c-ink-strong)",
-              }}
-            >
-              가격 정책은 투명하게 안내합니다.
-            </h2>
-            <p className="mt-3 max-w-[54ch]" style={{ color: "var(--c-muted)" }}>
-              매장 결제 방식을 유지하고, 수수료는 자동으로 정산됩니다. (정책 내용 입력)
-            </p>
-
-            <div className="mt-6 grid gap-3 md:grid-cols-3">
-              {[
-                { icon: <CreditCard className="h-4 w-4" />, t: "매장 결제", d: "기존 결제 방식 유지" },
-                { icon: <Wallet className="h-4 w-4" />, t: "자동 정산", d: "판매 기준 자동 처리" },
-                { icon: <BadgeCheck className="h-4 w-4" />, t: "입점 혜택", d: BRAND.promo },
-              ].map((x, i) => (
-                <Card key={i} className="p-5" style={{ boxShadow: "none" }}>
-                  <div className="flex items-center gap-2 text-[14px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
-                    <span className="grid h-8 w-8 place-items-center rounded-[20px]" style={{ background: "rgba(0,213,99,0.14)" }}>
-                      {x.icon}
-                    </span>
-                    {x.t}
-                  </div>
-                  <div className="mt-1 text-[13px]" style={{ color: "var(--c-muted)" }}>
-                    {x.d}
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </motion.div>
-
-          <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.08 }}>
-            <Card className="p-6" style={{ boxShadow: "var(--sh-md)" } as any}>
-              <div className="text-[13px]" style={{ color: "var(--c-muted)" }}>
-                한줄 요약
-              </div>
-              <div className="mt-2 text-[18px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
-                남는 재고를 매출로 바꾸는 가장 쉬운 방법
-              </div>
-              <div className="mt-5 grid gap-2 text-[13px]" style={{ color: "var(--c-muted)" }}>
-                {[
-                  "등록은 1분, 운영은 간단하게",
-                  "고객은 예약, 매장은 준비만",
-                  "지역 운영: 신청 후 안내",
-                ].map((t, i) => (
-                  <div key={i} className="flex items-start gap-2">
-                    <Check className="mt-[2px] h-4 w-4" style={{ color: "var(--c-primary)" }} />
-                    <span>{t}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-6 grid gap-3">
-                <Button variant="primary" onClick={() => scrollToId("apply")}>
-                  입점 신청하기 <ArrowRight className="h-4 w-4" />
-                </Button>
-                <Button variant="outline" onClick={openCall}>
-                  무료 상담받기 <Phone className="h-4 w-4" />
-                </Button>
-              </div>
-            </Card>
-          </motion.div>
-        </div>
-      </section>
-
       {/* FAQ */}
-      <section id="faq" className="py-20" style={{ background: "rgba(13,18,32,0.03)" }}>
+      <section id="faq" className="py-20">
         <div className="mx-auto px-4" style={{ maxWidth: MAX }}>
           <motion.div {...fadeUp} className="grid gap-6 md:grid-cols-[1fr_1.2fr] md:items-start">
             <div>
@@ -554,10 +601,11 @@ export default function SaveItLandingTokenized() {
 
             <div className="grid gap-3">
               {[
-                { q: "신청하면 바로 입점 가능한가요?", a: "지역/업종 기준을 확인한 뒤 순차 안내됩니다. (내용 입력)" },
-                { q: "결제는 어디에서 진행되나요?", a: "고객은 매장에서 결제합니다. 기존 방식 그대로 운영됩니다." },
-                { q: "운영이 복잡하지는 않나요?", a: "등록-예약 확인-판매 3단계로 간단합니다." },
-                { q: "수수료는 어떻게 정산되나요?", a: "판매 기준 자동 정산됩니다. (정책 내용 입력)" },
+                { q: "고객이 제 시간에 안오면?", a: "지연 도착 기준과 처리 방식은 정책에 따라 안내드립니다. (내용 입력)" },
+                { q: "고객 예약 취소?", a: "취소 정책과 페널티는 사전 안내됩니다. (내용 입력)" },
+                { q: "판매량 제한 있는지?", a: "업장 상황에 맞게 유동적으로 설정할 수 있어요. (내용 입력)" },
+                { q: "이용금액?", a: "수수료 및 정산 방식은 안내자료로 제공됩니다. (내용 입력)" },
+                { q: "더 궁금하면요? (카톡 채널 QR)", a: "카카오톡 채널로 문의하시면 빠르게 답변드려요. (QR 교체 예정)" },
               ].map((x, i) => (
                 <Card key={i} className="p-5" style={{ boxShadow: "none" }}>
                   <div className="text-[15px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
@@ -574,7 +622,7 @@ export default function SaveItLandingTokenized() {
       </section>
 
       {/* APPLY */}
-      <section id="apply" className="py-20">
+      <section id="apply" className="py-20" style={{ background: "rgba(13,18,32,0.03)" }}>
         <div className="mx-auto grid gap-6 px-4 md:grid-cols-[1.1fr_0.9fr] md:items-start" style={{ maxWidth: MAX }}>
           <motion.div {...fadeUp}>
             <h2
@@ -585,10 +633,10 @@ export default function SaveItLandingTokenized() {
                 color: "var(--c-ink-strong)",
               }}
             >
-              {BRAND.city} 지역 입점 신청하기
+              1분만에 입점하기
             </h2>
             <p className="mt-3 max-w-[54ch]" style={{ color: "var(--c-muted)" }}>
-              가장 빠른 방법은 신청폼 작성입니다. 필요하시면 무료 상담으로도 안내드립니다.
+              앱 설치 후 바로 신청 가능합니다. QR을 스캔해 주세요.
             </p>
 
             <div className="mt-6 grid gap-3">
@@ -632,16 +680,26 @@ export default function SaveItLandingTokenized() {
                 </Button>
               </div>
 
-              <div className="mt-5 rounded-[20px] border border-[var(--c-border)] bg-[var(--c-surface)] p-4" style={{ boxShadow: "none" }}>
-                <div className="flex items-center gap-2 text-[14px] font-[700]" style={{ color: "var(--c-ink-strong)" }}>
-                  <MessageCircle className="h-4 w-4" style={{ color: "var(--c-primary)" }} />
-                  연락처
+              <div className="mt-6 grid gap-4">
+                <div className="rounded-[20px] border border-[var(--c-border)] bg-[var(--c-surface)] p-4" style={{ boxShadow: "none" }}>
+                  <div className="flex items-center gap-2 text-[14px] font-[700]" style={{ color: "var(--c-ink-strong)" }}>
+                    <Package className="h-4 w-4" style={{ color: "var(--c-primary)" }} />
+                    앱다운 QR
+                  </div>
+                  <img src={QR_PLACEHOLDER} alt="App QR" className="mt-3 h-[180px] w-[180px]" />
                 </div>
-                <div className="mt-2 text-[13px]" style={{ color: "var(--c-muted)" }}>
-                  전화:{" "}
-                  <a className="font-[700] underline" href={`tel:${BRAND.phone}`}>
-                    {BRAND.phoneDisplay}
-                  </a>
+
+                <div className="rounded-[20px] border border-[var(--c-border)] bg-[var(--c-surface)] p-4" style={{ boxShadow: "none" }}>
+                  <div className="flex items-center gap-2 text-[14px] font-[700]" style={{ color: "var(--c-ink-strong)" }}>
+                    <MessageCircle className="h-4 w-4" style={{ color: "var(--c-primary)" }} />
+                    컨택 포인트
+                  </div>
+                  <div className="mt-2 text-[13px]" style={{ color: "var(--c-muted)" }}>
+                    메일: hello@saveit.co (수정 예정)
+                  </div>
+                  <div className="mt-1 text-[13px]" style={{ color: "var(--c-muted)" }}>
+                    문자: {BRAND.phoneDisplay} (수정 예정)
+                  </div>
                 </div>
               </div>
             </Card>
@@ -671,14 +729,14 @@ export default function SaveItLandingTokenized() {
               <div className="text-[14px] font-[700]" style={{ color: "var(--c-ink-strong)" }}>
                 안내
               </div>
-              <button className="text-left hover:text-[var(--c-ink)]" onClick={() => scrollToId("how")}>
-                운영 방식
+              <button className="text-left hover:text-[var(--c-ink)]" onClick={() => scrollToId("process")}>
+                이용 방법
               </button>
-              <button className="text-left hover:text-[var(--c-ink)]" onClick={() => scrollToId("proof")}>
-                신뢰 요소
+              <button className="text-left hover:text-[var(--c-ink)]" onClick={() => scrollToId("benefits")}>
+                입점 메리트
               </button>
-              <button className="text-left hover:text-[var(--c-ink)]" onClick={() => scrollToId("pricing")}>
-                가격 정책
+              <button className="text-left hover:text-[var(--c-ink)]" onClick={() => scrollToId("faq")}>
+                FAQ
               </button>
               <button className="text-left hover:text-[var(--c-ink)]" onClick={() => scrollToId("apply")}>
                 입점 신청
