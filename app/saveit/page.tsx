@@ -172,6 +172,32 @@ const QR_PLACEHOLDER = svgDataUri(`
   <text x="160" y="300" font-size="20" text-anchor="middle" font-family="Arial" fill="#5B6478">APP QR</text>
 </svg>
 `);
+
+const PROOF_METRICS = [
+  { label: "입점 대기", value: "000+", note: "(예정)" },
+  { label: "누적 예약", value: "000,000+", note: "(예정)" },
+  { label: "재방문율", value: "00%", note: "(예정)" },
+];
+
+const LOGO_CHIPS = ["프리미엄 베이커리", "정육점", "반찬가게", "샐러드", "디저트", "로컬마켓", "푸드마켓", "도시락"];
+
+const TESTIMONIALS = [
+  {
+    name: "동네 정육점",
+    role: "육류",
+    quote: "마감 재고가 매출로 바뀌니, 폐기 걱정이 크게 줄었어요.",
+  },
+  {
+    name: "프리미엄 베이커리",
+    role: "베이커리",
+    quote: "예약 판매 덕분에 당일 생산·당일 판매 원칙을 지킬 수 있었습니다.",
+  },
+  {
+    name: "반찬 공방",
+    role: "반찬",
+    quote: "등록이 간단해서 직원 교육 부담이 확 줄었어요.",
+  },
+];
 function Button({
   variant = "primary",
   className,
@@ -300,7 +326,47 @@ export default function SaveItLandingTokenized() {
           overflow-wrap: break-word;
         }
         h1, h2, h3 { font-family: ${TOKENS.typography.font.display}, ${TOKENS.typography.font.body}, ui-sans-serif; }
+        .float-slow { animation: floatY 10s ease-in-out infinite; }
+        .float-medium { animation: floatY 7s ease-in-out infinite; }
+        .float-fast { animation: floatY 5s ease-in-out infinite; }
+        .spin-slow { animation: spin 28s linear infinite; }
+        .glow-ring { box-shadow: 0 0 0 1px rgba(0,213,99,0.15), 0 18px 48px rgba(0,213,99,0.18); }
+        .shine {
+          background: linear-gradient(120deg, rgba(255,255,255,0.0), rgba(255,255,255,0.6), rgba(255,255,255,0.0));
+          background-size: 200% 100%;
+          animation: shine 6s ease-in-out infinite;
+        }
+        .marquee {
+          display: inline-flex;
+          gap: 16px;
+          white-space: nowrap;
+          animation: marquee 20s linear infinite;
+        }
+        @keyframes floatY {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-12px); }
+          100% { transform: translateY(0px); }
+        }
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        @keyframes shine {
+          0% { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
+        }
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
       `}</style>
+
+      {/* Ambient background */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute left-[-180px] top-[-120px] h-[360px] w-[360px] rounded-full bg-[rgba(0,213,99,0.18)] blur-3xl" />
+        <div className="absolute right-[-140px] top-[120px] h-[320px] w-[320px] rounded-full bg-[rgba(255,213,106,0.22)] blur-3xl" />
+        <div className="absolute left-[10%] top-[35%] h-[220px] w-[220px] rounded-full bg-[rgba(0,213,99,0.12)] blur-3xl" />
+      </div>
 
       {/* NAV */}
       <header className="sticky top-0 z-40 border-b border-[var(--c-border)] bg-[rgba(250,250,250,0.78)] backdrop-blur">
@@ -322,6 +388,9 @@ export default function SaveItLandingTokenized() {
           <nav className="hidden items-center gap-6 text-[14px] md:flex" style={{ color: "var(--c-muted)" }}>
             <button className="hover:text-[var(--c-ink)]" onClick={() => scrollToId("process")}>
               이용 방법
+            </button>
+            <button className="hover:text-[var(--c-ink)]" onClick={() => scrollToId("proof")}>
+              신뢰
             </button>
             <button className="hover:text-[var(--c-ink)]" onClick={() => scrollToId("benefits")}>
               입점 메리트
@@ -351,6 +420,11 @@ export default function SaveItLandingTokenized() {
           backgroundPosition: "center",
         }}
       >
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -left-24 top-10 h-[220px] w-[220px] rounded-full border border-[rgba(0,213,99,0.25)] opacity-60 spin-slow" />
+          <div className="absolute right-10 top-6 h-[140px] w-[140px] rounded-full border border-[rgba(255,213,106,0.35)] opacity-70 spin-slow" />
+          <div className="absolute right-[-80px] bottom-[-40px] h-[220px] w-[220px] rounded-full bg-[rgba(0,213,99,0.16)] blur-3xl" />
+        </div>
         <div className="mx-auto grid gap-10 px-4 md:grid-cols-2 md:items-center" style={{ maxWidth: MAX }}>
           <motion.div {...fadeUp} className="space-y-6">
             <div className="flex flex-wrap items-center gap-2">
@@ -400,8 +474,27 @@ export default function SaveItLandingTokenized() {
           </motion.div>
 
           {/* Right card */}
-          <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.08 }}>
-            <Card className="p-6" style={{ boxShadow: "var(--sh-md)" } as any}>
+          <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.08 }} className="relative">
+            <div className="pointer-events-none absolute -left-10 -top-8 h-24 w-24 rounded-full bg-[rgba(255,213,106,0.35)] blur-2xl" />
+            <div className="pointer-events-none absolute -right-12 top-16 h-24 w-24 rounded-full bg-[rgba(0,213,99,0.28)] blur-2xl" />
+            <motion.div
+              className="pointer-events-none absolute -top-10 right-6 rounded-[18px] border border-[var(--c-border)] bg-[rgba(255,255,255,0.9)] px-4 py-3 text-[12px] font-[700]"
+              style={{ boxShadow: "var(--sh-sm)", color: "var(--c-ink-strong)" }}
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            >
+              오늘 남은 재고, 바로 판매
+            </motion.div>
+            <motion.div
+              className="pointer-events-none absolute -bottom-8 left-4 rounded-[18px] border border-[var(--c-border)] bg-[rgba(255,255,255,0.9)] px-4 py-3 text-[12px] font-[700]"
+              style={{ boxShadow: "var(--sh-sm)", color: "var(--c-ink-strong)" }}
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+            >
+              매출 + 환경, 동시에
+            </motion.div>
+            <Card className="relative overflow-hidden p-6" style={{ boxShadow: "var(--sh-md)" } as any}>
+              <div className="pointer-events-none absolute inset-0 opacity-30 shine" />
               <div className="text-[18px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
                 입점 신청
               </div>
@@ -462,7 +555,7 @@ export default function SaveItLandingTokenized() {
                 { icon: <MessageCircle className="h-4 w-4" />, t: "자동 알림", d: "고객에게 즉시 예약 안내" },
                 { icon: <Clock className="h-4 w-4" />, t: "운영 간소화", d: "판매와 픽업만 집중" },
               ].map((x, i) => (
-                <Card key={i} className="p-5" style={{ boxShadow: "none" }}>
+                <Card key={i} className="p-5 transition-transform duration-300 hover:-translate-y-1" style={{ boxShadow: "none" }}>
                   <div className="flex items-center gap-2 text-[14px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
                     <span className="grid h-8 w-8 place-items-center rounded-[20px]" style={{ background: "rgba(0,213,99,0.14)" }}>
                       {x.icon}
@@ -493,7 +586,7 @@ export default function SaveItLandingTokenized() {
               },
             ].map((step, i) => (
               <motion.div key={step.title} {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.05 * i }}>
-                <Card className="overflow-hidden">
+                <Card className="overflow-hidden transition-transform duration-300 hover:-translate-y-1">
                   <img src={STEP_IMAGES[i]} alt={`Process step ${i + 1}`} className="h-[180px] w-full object-cover" />
                   <div className="p-4">
                     <div className="text-[15px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
@@ -509,6 +602,73 @@ export default function SaveItLandingTokenized() {
           </div>
         </div>
       </section>
+
+      {/* PROOF */}
+      <section id="proof" className="py-20">
+        <div className="mx-auto px-4" style={{ maxWidth: MAX }}>
+          <motion.div {...fadeUp} className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <h2
+                style={{
+                  fontSize: TOKENS.typography.scale.h2.size,
+                  lineHeight: TOKENS.typography.scale.h2.lineHeight,
+                  fontWeight: TOKENS.typography.scale.h2.weight as any,
+                  color: "var(--c-ink-strong)",
+                }}
+              >
+                신뢰가 있어야, 입점이 쉬워집니다.
+              </h2>
+              <p className="mt-2 max-w-[52ch] text-[13px]" style={{ color: "var(--c-muted)" }}>
+                매출과 환경을 동시에 잡는 운영 흐름을 수치와 후기 형태로 제시합니다. (수치/로고는 추후 업데이트)
+              </p>
+            </div>
+            <Button variant="outline" onClick={() => scrollToId("apply")}>
+              입점 신청하기 <ArrowRight className="h-4 w-4" />
+            </Button>
+          </motion.div>
+
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {PROOF_METRICS.map((metric) => (
+              <Card key={metric.label} className="relative overflow-hidden p-5 transition-transform duration-300 hover:-translate-y-1">
+                <div className="pointer-events-none absolute inset-0 opacity-30 shine" />
+                <div className="text-[13px] font-[650]" style={{ color: "var(--c-muted)" }}>
+                  {metric.label}
+                </div>
+                <div className="mt-2 text-[26px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
+                  {metric.value}
+                </div>
+                <div className="text-[12px]" style={{ color: "var(--c-muted)" }}>
+                  {metric.note}
+                </div>
+              </Card>
+            ))}
+          </div>
+
+          <div className="mt-8 overflow-hidden rounded-[24px] border border-[var(--c-border)] bg-[var(--c-surface)] px-4 py-5">
+            <div className="marquee">
+              {[...LOGO_CHIPS, ...LOGO_CHIPS].map((chip, idx) => (
+                <div key={`${chip}-${idx}`} className="rounded-full border border-[var(--c-border)] bg-white px-4 py-2 text-[12px] font-[650] text-[var(--c-ink)]">
+                  {chip}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            {TESTIMONIALS.map((t) => (
+              <Card key={t.name} className="p-6 transition-transform duration-300 hover:-translate-y-1" style={{ boxShadow: "none" }}>
+                <div className="text-[14px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
+                  “{t.quote}”
+                </div>
+                <div className="mt-4 text-[12px]" style={{ color: "var(--c-muted)" }}>
+                  {t.name} · {t.role}
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* BENEFITS */}
       <section id="benefits" className="py-20" style={{ background: "rgba(13,18,32,0.03)" }}>
         <div className="mx-auto px-4" style={{ maxWidth: MAX }}>
@@ -562,7 +722,7 @@ export default function SaveItLandingTokenized() {
                   d: "홍보는 자연스럽게, 신규 고객 전환과 외부 고객 유입을 돕습니다.",
                 },
               ].map((x, i) => (
-                <Card key={i} className="p-6" style={{ boxShadow: "none" }}>
+                <Card key={i} className="p-6 transition-transform duration-300 hover:-translate-y-1" style={{ boxShadow: "none" }}>
                   <div className="flex items-center gap-2 text-[15px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
                     <span className="grid h-9 w-9 place-items-center rounded-[20px]" style={{ background: "rgba(0,213,99,0.14)" }}>
                       {x.icon}
@@ -681,7 +841,7 @@ export default function SaveItLandingTokenized() {
               </div>
 
               <div className="mt-6 grid gap-4">
-                <div className="rounded-[20px] border border-[var(--c-border)] bg-[var(--c-surface)] p-4" style={{ boxShadow: "none" }}>
+                <div className="rounded-[20px] border border-[var(--c-border)] bg-[var(--c-surface)] p-4 glow-ring" style={{ boxShadow: "none" }}>
                   <div className="flex items-center gap-2 text-[14px] font-[700]" style={{ color: "var(--c-ink-strong)" }}>
                     <Package className="h-4 w-4" style={{ color: "var(--c-primary)" }} />
                     앱다운 QR
@@ -731,6 +891,9 @@ export default function SaveItLandingTokenized() {
               </div>
               <button className="text-left hover:text-[var(--c-ink)]" onClick={() => scrollToId("process")}>
                 이용 방법
+              </button>
+              <button className="text-left hover:text-[var(--c-ink)]" onClick={() => scrollToId("proof")}>
+                신뢰
               </button>
               <button className="text-left hover:text-[var(--c-ink)]" onClick={() => scrollToId("benefits")}>
                 입점 메리트
