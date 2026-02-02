@@ -1,75 +1,50 @@
-﻿
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
-  BadgeCheck,
-  Clock,
-  CreditCard,
+  Check,
+  ChevronDown,
   Leaf,
-  MapPin,
   MessageCircle,
   Package,
-  Phone,
-  Sparkles,
+  Store,
+  TrendingUp,
+  Users,
   Wallet,
 } from "lucide-react";
 
-/**
- * Save it Landing Page (Next.js App Router)
- * 목적:
- * 1) 고객 모집에 최적화된 카피와 구조
- * 2) 섹션 간소화 및 전환 동선 강화
- * 3) 입점 신청 / 무료 상담 CTA 강화
- */
-
 const TOKENS = {
-  typography: {
-    font: { display: "Manrope", body: "IBM Plex Sans KR" },
-    scale: {
-      h1: { size: "clamp(30px, 3.6vw, 52px)", lineHeight: 1.08, weight: 750 },
-      h2: { size: "clamp(22px, 2.4vw, 32px)", lineHeight: 1.18, weight: 720 },
-      h3: { size: "18px", lineHeight: 1.28, weight: 700 },
-      body: { size: "16px", lineHeight: 1.65, weight: 450 },
-      caption: { size: "13px", lineHeight: 1.5, weight: 450 },
-    },
-  },
   color: {
     primary: "#00D563",
-    neutral: { 950: "#0D1220", 800: "#1A1A2E", 600: "#5B6478", 200: "#E6E9EF" },
-    accent: "#FFD56A",
-    background: "#FAFAFA",
-    surface: "#FFFFFF",
-    border: "rgba(13,18,32,0.10)",
-  },
-  radius: { ui: 20 },
-  shadow: {
-    sm: "0 10px 28px rgba(0,0,0,0.06)",
-    md: "0 16px 44px rgba(0,0,0,0.10)",
+    accent: "#FF8A3D",
+    kakao: "#FEE500",
+    ink: "#111827",
+    muted: "#6B7280",
+    border: "#E6EAF0",
+    bg: "#FFFFFF",
+    surface: "#F7F9FC",
+    dark: "#0E1626",
   },
   layout: { maxWidth: 1120 },
+  shadow: {
+    sm: "0 8px 24px rgba(15, 23, 42, 0.08)",
+    md: "0 22px 60px rgba(15, 23, 42, 0.12)",
+  },
+  radius: { lg: 28 },
 };
 
 const BRAND = {
-  name: "Save it",
-  city: "강남",
-  start: "1호 지역 론칭",
-  promo: "입점 수수료 혜택",
-  categories: "고기 · 야채 · 반찬 · 신선식품",
+  name: "세이브잇",
   phone: "01056367386",
-  phoneDisplay: "010-5636-7386",
-  googleFormView:
-    "https://docs.google.com/forms/d/e/1FAIpQLSdxYX4iorhQGRW3J0gHF40KWQDuOUi0t6TywOvTaaRVIsDcHg/viewform",
 };
 
 const EASE_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
-
 const fadeUp = {
-  initial: { opacity: 0, y: 10 },
+  initial: { opacity: 0, y: 14 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-60px" },
+  viewport: { once: true, margin: "-80px" },
   transition: { duration: 0.5, ease: EASE_OUT },
 };
 
@@ -77,170 +52,60 @@ function cn(...xs: Array<string | undefined | false>) {
   return xs.filter(Boolean).join(" ");
 }
 
-function scrollToId(id: string) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.scrollIntoView({ behavior: "smooth", block: "start" });
-}
-
 function svgDataUri(svg: string) {
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
 
-const HERO_BG = svgDataUri(`
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+const HERO_IMAGE = svgDataUri(`
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900">
   <defs>
     <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#00D563" stop-opacity="0.28" />
-      <stop offset="45%" stop-color="#FFD56A" stop-opacity="0.22" />
-      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.0" />
+      <stop offset="0%" stop-color="#0E2A33" />
+      <stop offset="100%" stop-color="#1B3B3A" />
     </linearGradient>
-    <radialGradient id="r1" cx="0.2" cy="0.1" r="0.6">
-      <stop offset="0%" stop-color="#00D563" stop-opacity="0.25" />
-      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
-    </radialGradient>
-    <radialGradient id="r2" cx="0.85" cy="0.2" r="0.5">
-      <stop offset="0%" stop-color="#FFD56A" stop-opacity="0.35" />
+    <radialGradient id="g2" cx="0.2" cy="0.2" r="0.9">
+      <stop offset="0%" stop-color="#28D37E" stop-opacity="0.25" />
       <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
     </radialGradient>
   </defs>
-  <rect width="1600" height="900" fill="#F6FBF8" />
-  <rect width="1600" height="900" fill="url(#g1)" />
-  <circle cx="220" cy="160" r="220" fill="url(#r1)" />
-  <circle cx="1300" cy="220" r="240" fill="url(#r2)" />
-  <g opacity="0.25">
-    <circle cx="420" cy="640" r="140" fill="#00D563" />
-    <circle cx="1180" cy="620" r="160" fill="#FFD56A" />
+  <rect width="900" height="900" fill="url(#g2)" />
+  <rect x="80" y="90" width="740" height="720" rx="56" fill="url(#g1)" />
+  <ellipse cx="450" cy="600" rx="260" ry="60" fill="#0A1D22" />
+  <g>
+    <ellipse cx="320" cy="500" rx="150" ry="90" fill="#6ED36A" />
+    <ellipse cx="520" cy="490" rx="160" ry="100" fill="#F25050" />
+    <ellipse cx="450" cy="430" rx="90" ry="60" fill="#FFC85A" />
+  </g>
+  <g fill="#FFFFFF" opacity="0.18">
+    <circle cx="180" cy="170" r="48" />
+    <circle cx="720" cy="210" r="28" />
   </g>
 </svg>
 `);
-const STEP_IMAGES = [
-  svgDataUri(`
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420">
-  <rect width="640" height="420" fill="#F5F7FB" />
-  <rect x="32" y="32" width="576" height="356" rx="28" fill="#FFFFFF" stroke="#DCE2EE" />
-  <text x="64" y="120" font-size="36" font-family="Arial" fill="#0D1220">STEP 01</text>
-  <rect x="64" y="160" width="260" height="18" rx="9" fill="#00D563" />
-  <rect x="64" y="200" width="220" height="12" rx="6" fill="#D7DEE9" />
-  <rect x="64" y="224" width="260" height="12" rx="6" fill="#D7DEE9" />
-  <rect x="64" y="248" width="180" height="12" rx="6" fill="#D7DEE9" />
-</svg>
-`),
-  svgDataUri(`
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420">
-  <rect width="640" height="420" fill="#F5F7FB" />
-  <rect x="32" y="32" width="576" height="356" rx="28" fill="#FFFFFF" stroke="#DCE2EE" />
-  <text x="64" y="120" font-size="36" font-family="Arial" fill="#0D1220">STEP 02</text>
-  <circle cx="520" cy="196" r="54" fill="#FFD56A" />
-  <rect x="64" y="170" width="320" height="16" rx="8" fill="#00D563" />
-  <rect x="64" y="210" width="260" height="12" rx="6" fill="#D7DEE9" />
-  <rect x="64" y="234" width="220" height="12" rx="6" fill="#D7DEE9" />
-</svg>
-`),
-  svgDataUri(`
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420">
-  <rect width="640" height="420" fill="#F5F7FB" />
-  <rect x="32" y="32" width="576" height="356" rx="28" fill="#FFFFFF" stroke="#DCE2EE" />
-  <text x="64" y="120" font-size="36" font-family="Arial" fill="#0D1220">STEP 03</text>
-  <rect x="64" y="170" width="420" height="16" rx="8" fill="#00D563" />
-  <rect x="64" y="210" width="220" height="12" rx="6" fill="#D7DEE9" />
-  <rect x="64" y="234" width="260" height="12" rx="6" fill="#D7DEE9" />
-  <rect x="64" y="258" width="180" height="12" rx="6" fill="#D7DEE9" />
-</svg>
-`),
-];
 
-const QR_PLACEHOLDER = svgDataUri(`
-<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320">
-  <rect width="320" height="320" fill="#FFFFFF" stroke="#DCE2EE" />
-  <rect x="24" y="24" width="80" height="80" fill="#0D1220" />
-  <rect x="216" y="24" width="80" height="80" fill="#0D1220" />
-  <rect x="24" y="216" width="80" height="80" fill="#0D1220" />
-  <rect x="52" y="52" width="24" height="24" fill="#FFFFFF" />
-  <rect x="244" y="52" width="24" height="24" fill="#FFFFFF" />
-  <rect x="52" y="244" width="24" height="24" fill="#FFFFFF" />
-  <g fill="#0D1220">
-    <rect x="140" y="64" width="24" height="24" />
-    <rect x="168" y="92" width="24" height="24" />
-    <rect x="124" y="120" width="24" height="24" />
-    <rect x="196" y="132" width="24" height="24" />
-    <rect x="156" y="164" width="24" height="24" />
-    <rect x="104" y="168" width="24" height="24" />
-    <rect x="188" y="188" width="24" height="24" />
-    <rect x="132" y="208" width="24" height="24" />
-  </g>
-  <text x="160" y="300" font-size="20" text-anchor="middle" font-family="Arial" fill="#5B6478">APP QR</text>
-</svg>
-`);
-
-const PROOF_METRICS = [
-  { label: "입점 대기", value: "000+", note: "(예정)" },
-  { label: "누적 예약", value: "000,000+", note: "(예정)" },
-  { label: "재방문율", value: "00%", note: "(예정)" },
-];
-
-const LOGO_CHIPS = ["프리미엄 베이커리", "정육점", "반찬가게", "샐러드", "디저트", "로컬마켓", "푸드마켓", "도시락"];
-
-const TESTIMONIALS = [
-  {
-    name: "동네 정육점",
-    role: "육류",
-    quote: "마감 재고가 매출로 바뀌니, 폐기 걱정이 크게 줄었어요.",
-  },
-  {
-    name: "프리미엄 베이커리",
-    role: "베이커리",
-    quote: "예약 판매 덕분에 당일 생산·당일 판매 원칙을 지킬 수 있었습니다.",
-  },
-  {
-    name: "반찬 공방",
-    role: "반찬",
-    quote: "등록이 간단해서 직원 교육 부담이 확 줄었어요.",
-  },
-];
 function Button({
   variant = "primary",
   className,
   onClick,
-  type,
   children,
-  href,
-  target,
 }: {
-  variant?: "primary" | "outline" | "ghost";
+  variant?: "primary" | "outline" | "kakao";
   className?: string;
   onClick?: () => void;
-  type?: "button" | "submit";
   children: React.ReactNode;
-  href?: string;
-  target?: string;
 }) {
   const base =
-    "inline-flex items-center justify-center gap-2 select-none whitespace-nowrap" +
-    " h-12 px-[18px] rounded-[20px] text-[15px] font-[650]";
-
+    "inline-flex items-center justify-center gap-2 select-none whitespace-nowrap rounded-full text-[15px] font-[700] transition";
   const styles: Record<typeof variant, string> = {
-    primary:
-      "text-[#052013] bg-[var(--c-primary)] hover:opacity-95 active:opacity-90 shadow-[var(--sh-sm)]",
+    primary: "h-12 px-6 text-white bg-[var(--c-primary)] hover:brightness-95",
     outline:
-      "bg-[var(--c-surface)] text-[var(--c-ink)] border border-[var(--c-border)] hover:bg-[rgba(13,18,32,0.03)]",
-    ghost:
-      "bg-transparent text-[var(--c-muted)] hover:text-[var(--c-ink)] hover:bg-[rgba(13,18,32,0.03)]",
+      "h-12 px-6 border border-[var(--c-border)] text-[var(--c-ink)] bg-white hover:bg-[rgba(15,23,42,0.03)]",
+    kakao: "h-12 px-6 text-[#3C1E1E] bg-[var(--c-kakao)] hover:brightness-95",
   };
-
-  const Comp: any = href ? "a" : "button";
-
   return (
-    <Comp
-      type={href ? undefined : type ?? "button"}
-      href={href}
-      target={target}
-      rel={target === "_blank" ? "noopener noreferrer" : undefined}
-      onClick={onClick}
-      className={cn(base, styles[variant], className)}
-    >
+    <button onClick={onClick} className={cn(base, styles[variant], className)}>
       {children}
-    </Comp>
+    </button>
   );
 }
 
@@ -255,705 +120,429 @@ function Card({
 }) {
   return (
     <div
-      className={cn("min-w-0 rounded-[20px] bg-[var(--c-surface)] border border-[var(--c-border)]", className)}
-      style={{ boxShadow: "var(--sh-sm)", ...style }}
+      className={cn("min-w-0 rounded-[24px] border border-[var(--c-border)] bg-white", className)}
+      style={style}
     >
       {children}
     </div>
   );
 }
 
-function Pill({
-  children,
-  tone = "neutral",
-}: {
-  children: React.ReactNode;
-  tone?: "neutral" | "green" | "amber";
-}) {
-  const cls =
-    tone === "green"
-      ? "bg-[rgba(0,213,99,0.14)] text-[var(--c-ink)]"
-      : tone === "amber"
-      ? "bg-[rgba(255,213,106,0.30)] text-[var(--c-ink)]"
-      : "bg-[rgba(13,18,32,0.06)] text-[var(--c-ink)]";
-  return (
-    <span className={cn("inline-flex items-center gap-2 rounded-full px-3 py-1 text-[13px]", cls)}>
-      {children}
-    </span>
-  );
-}
-
-export default function SaveItLandingTokenized() {
-  const [submitted, setSubmitted] = useState(false);
-
-  const openApply = () => {
-    window.open(BRAND.googleFormView, "_blank", "noopener,noreferrer");
-    setSubmitted(true);
-    setTimeout(() => scrollToId("apply"), 50);
-  };
-
-  const openCall = () => window.open(`tel:${BRAND.phone}`, "_self");
-
+export default function SaveItLanding() {
   const MAX = TOKENS.layout.maxWidth;
-
   const cssVars = useMemo(
     () =>
       ({
         "--c-primary": TOKENS.color.primary,
-        "--c-ink": TOKENS.color.neutral[800],
-        "--c-ink-strong": TOKENS.color.neutral[950],
-        "--c-muted": TOKENS.color.neutral[600],
-        "--c-bg": TOKENS.color.background,
-        "--c-surface": TOKENS.color.surface,
-        "--c-border": TOKENS.color.border,
         "--c-accent": TOKENS.color.accent,
-        "--sh-sm": TOKENS.shadow.sm,
-        "--sh-md": TOKENS.shadow.md,
+        "--c-kakao": TOKENS.color.kakao,
+        "--c-ink": TOKENS.color.ink,
+        "--c-muted": TOKENS.color.muted,
+        "--c-border": TOKENS.color.border,
+        "--c-bg": TOKENS.color.bg,
+        "--c-surface": TOKENS.color.surface,
+        "--c-dark": TOKENS.color.dark,
       }) as React.CSSProperties,
     []
   );
 
   return (
     <div style={cssVars} className="relative min-h-screen overflow-x-hidden bg-[var(--c-bg)] text-[var(--c-ink)]">
-      {/* Fonts (2 only) + Korean wrapping fix */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;750&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap');
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css');
         html, body {
-          font-family: ${TOKENS.typography.font.body}, ui-sans-serif, system-ui;
-          font-size: ${TOKENS.typography.scale.body.size};
-          line-height: ${TOKENS.typography.scale.body.lineHeight};
+          font-family: Pretendard Variable, Pretendard, ui-sans-serif, system-ui;
           word-break: keep-all;
           overflow-wrap: break-word;
           overflow-x: hidden;
         }
-        h1, h2, h3 { font-family: ${TOKENS.typography.font.display}, ${TOKENS.typography.font.body}, ui-sans-serif; }
+        h1, h2, h3 { font-family: Pretendard Variable, Pretendard, ui-sans-serif; }
         img { max-width: 100%; height: auto; display: block; }
-        .float-slow { animation: floatY 10s ease-in-out infinite; }
-        .float-medium { animation: floatY 7s ease-in-out infinite; }
-        .float-fast { animation: floatY 5s ease-in-out infinite; }
-        .spin-slow { animation: spin 28s linear infinite; }
-        .glow-ring { box-shadow: 0 0 0 1px rgba(0,213,99,0.15), 0 18px 48px rgba(0,213,99,0.18); }
-        .shine {
-          background: linear-gradient(120deg, rgba(255,255,255,0.0), rgba(255,255,255,0.6), rgba(255,255,255,0.0));
-          background-size: 200% 100%;
-          animation: shine 6s ease-in-out infinite;
-        }
-        .marquee {
-          display: inline-flex;
-          gap: 16px;
-          white-space: nowrap;
-          animation: marquee 20s linear infinite;
-        }
-        @keyframes floatY {
-          0% { transform: translateY(0px); }
-          50% { transform: translateY(-12px); }
-          100% { transform: translateY(0px); }
-        }
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-        @keyframes shine {
-          0% { background-position: 200% 0; }
-          100% { background-position: -200% 0; }
-        }
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
       `}</style>
 
-      {/* Ambient background */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-[-180px] top-[-120px] h-[360px] w-[360px] rounded-full bg-[rgba(0,213,99,0.18)] blur-3xl" />
-        <div className="absolute right-[-140px] top-[120px] h-[320px] w-[320px] rounded-full bg-[rgba(255,213,106,0.22)] blur-3xl" />
-        <div className="absolute left-[10%] top-[35%] h-[220px] w-[220px] rounded-full bg-[rgba(0,213,99,0.12)] blur-3xl" />
-      </div>
-
-      {/* NAV */}
-      <header className="sticky top-0 z-40 border-b border-[var(--c-border)] bg-[rgba(250,250,250,0.78)] backdrop-blur">
-        <div className="mx-auto flex items-center justify-between px-4 py-3" style={{ maxWidth: MAX }}>
-          <div className="flex items-center gap-3">
-            <div className="grid h-10 w-10 place-items-center rounded-[20px]" style={{ background: "rgba(0,213,99,0.14)" }}>
-              <Leaf className="h-5 w-5" style={{ color: "var(--c-primary)" }} />
-            </div>
-            <div className="leading-tight">
-              <div className="text-[14px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
-                {BRAND.name}
-              </div>
-              <div className="text-[13px]" style={{ color: "var(--c-muted)" }}>
-                소비기한 임박 상품 · 예약 판매
-              </div>
-            </div>
-          </div>
-
-          <nav className="hidden items-center gap-6 text-[14px] md:flex" style={{ color: "var(--c-muted)" }}>
-            <button className="hover:text-[var(--c-ink)]" onClick={() => scrollToId("process")}>
-              이용 방법
-            </button>
-            <button className="hover:text-[var(--c-ink)]" onClick={() => scrollToId("proof")}>
-              신뢰
-            </button>
-            <button className="hover:text-[var(--c-ink)]" onClick={() => scrollToId("benefits")}>
-              입점 메리트
-            </button>
-            <button className="hover:text-[var(--c-ink)]" onClick={() => scrollToId("faq")}>
-              FAQ
-            </button>
-            <Button variant="primary" onClick={() => scrollToId("apply")}>
-              입점 신청 <ArrowRight className="h-4 w-4" />
-            </Button>
-          </nav>
-
-          <div className="md:hidden">
-            <Button variant="primary" onClick={() => scrollToId("apply")}>
-              신청
-            </Button>
-          </div>
-        </div>
-      </header>
-
       {/* HERO */}
-      <section
-        className="relative overflow-hidden py-16 md:py-20"
-        style={{
-          backgroundImage: `linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.78)), url(${HERO_BG})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -left-24 top-10 h-[220px] w-[220px] rounded-full border border-[rgba(0,213,99,0.25)] opacity-60 spin-slow" />
-          <div className="absolute right-10 top-6 h-[140px] w-[140px] rounded-full border border-[rgba(255,213,106,0.35)] opacity-70 spin-slow" />
-          <div className="absolute right-[-80px] bottom-[-40px] h-[220px] w-[220px] rounded-full bg-[rgba(0,213,99,0.16)] blur-3xl" />
-        </div>
-        <div className="mx-auto grid gap-10 px-4 md:grid-cols-2 md:items-center" style={{ maxWidth: MAX }}>
+      <section id="hero" className="pt-16 pb-8 md:pt-20">
+        <div className="mx-auto grid gap-10 px-4 md:grid-cols-[1.05fr_0.95fr] md:items-center" style={{ maxWidth: MAX }}>
           <motion.div {...fadeUp} className="space-y-6">
-            <div className="flex flex-wrap items-center gap-2">
-              <Pill tone="green">
-                <MapPin className="h-3.5 w-3.5" /> {BRAND.city} 지역 · {BRAND.start}
-              </Pill>
-              <Pill tone="amber">
-                <Sparkles className="h-3.5 w-3.5" /> {BRAND.promo}
-              </Pill>
+            <div className="inline-flex items-center gap-2 rounded-full bg-[#E9FBEF] px-4 py-2 text-[13px] font-[600] text-[#1B7A45]">
+              <span className="h-2 w-2 rounded-full bg-[var(--c-primary)]" />
+              이미 2,500개 매장이 함께하고 있어요
             </div>
 
-            <h1
-              style={{
-                fontSize: TOKENS.typography.scale.h1.size,
-                lineHeight: TOKENS.typography.scale.h1.lineHeight,
-                fontWeight: TOKENS.typography.scale.h1.weight as any,
-                color: "var(--c-ink-strong)",
-              }}
-            >
-              열심히 준비한 음식,
-              <br className="hidden sm:block" />
-              제 값 받고 파세요
+            <h1 className="text-[clamp(34px,3.9vw,56px)] font-[800] leading-[1.12] text-[var(--c-ink)]">
+              우리 매장의 남은 음식,
+              <br />
+              <span className="text-[var(--c-accent)]">새로운 수익</span>이 됩니다
             </h1>
 
-            <div className="space-y-2 text-[17px]" style={{ color: "var(--c-ink-strong)" }}>
-              <p>음식 재고, 폐기 걱정은 이제 그만</p>
-              <p>매출도 높이고, 지구도 지킬 수 있어요!</p>
-            </div>
-
-            <p className="max-w-[46ch]" style={{ color: "var(--c-muted)" }}>
-              Save it은 소비기한이 가까운 신선 식품을 저렴하게 판매할 수 있도록 돕는 판매중개
-              플랫폼입니다. 고객은 예약하고, 매장은 준비만 하면 됩니다.
+            <p className="max-w-[48ch] text-[16px] text-[var(--c-muted)]">
+              마감 전 신선한 상품을 지역 고객에게 합리적인 가격으로 제안하세요. 재고 부담은 줄고,
+              매장 홍보 효과는 높아집니다.
             </p>
 
-            <div className="flex flex-wrap items-center gap-3">
-              <Button variant="primary" onClick={() => scrollToId("apply")}>
-                입점 신청하기 <ArrowRight className="h-4 w-4" />
+            <div className="flex flex-wrap gap-3">
+              <Button variant="primary">
+                지금 바로 파트너 되기 <ArrowRight className="h-4 w-4" />
               </Button>
-              <Button variant="outline" onClick={openCall}>
-                무료 상담 <Phone className="h-4 w-4" />
+              <Button variant="outline">
+                카카오 상담하기
               </Button>
-            </div>
-
-            <div className="text-[13px]" style={{ color: "var(--c-muted)" }}>
-              취급 품목: {BRAND.categories}
             </div>
           </motion.div>
 
-          {/* Right card */}
-          <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.08 }} className="relative">
-            <div className="pointer-events-none absolute -left-10 -top-8 h-24 w-24 rounded-full bg-[rgba(255,213,106,0.35)] blur-2xl" />
-            <div className="pointer-events-none absolute -right-12 top-16 h-24 w-24 rounded-full bg-[rgba(0,213,99,0.28)] blur-2xl" />
-            <motion.div
-              className="pointer-events-none absolute -top-10 right-6 rounded-[18px] border border-[var(--c-border)] bg-[rgba(255,255,255,0.9)] px-4 py-3 text-[12px] font-[700]"
-              style={{ boxShadow: "var(--sh-sm)", color: "var(--c-ink-strong)" }}
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            >
-              오늘 남은 재고, 바로 판매
-            </motion.div>
-            <motion.div
-              className="pointer-events-none absolute -bottom-8 left-4 rounded-[18px] border border-[var(--c-border)] bg-[rgba(255,255,255,0.9)] px-4 py-3 text-[12px] font-[700]"
-              style={{ boxShadow: "var(--sh-sm)", color: "var(--c-ink-strong)" }}
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-            >
-              매출 + 환경, 동시에
-            </motion.div>
-            <Card className="relative overflow-hidden p-6" style={{ boxShadow: "var(--sh-md)" } as any}>
-              <div className="pointer-events-none absolute inset-0 opacity-30 shine" />
-              <div className="text-[18px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
-                입점 신청
+          <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.08 }}>
+            <div className="rounded-[30px] bg-white p-4" style={{ boxShadow: TOKENS.shadow.md }}>
+              <div className="overflow-hidden rounded-[26px] bg-[#0F2C32]">
+                <img src={HERO_IMAGE} alt="hero" className="h-[340px] w-full object-cover" />
               </div>
-              <p className="mt-2 text-[13px]" style={{ color: "var(--c-muted)" }}>
-                간단한 폼 작성으로 빠르게 상담을 진행합니다.
-              </p>
-
-              <div className="mt-5 grid gap-3">
-                <Button variant="primary" onClick={openApply}>
-                  입점 신청하고 안내받기 <ArrowRight className="h-4 w-4" />
-                </Button>
-                <Button variant="outline" onClick={openCall}>
-                  무료 상담받기 <Phone className="h-4 w-4" />
-                </Button>
-              </div>
-
-              <div className="mt-5 rounded-[20px] border border-[var(--c-border)] bg-[var(--c-surface)] p-4" style={{ boxShadow: "none" }}>
-                <div className="flex items-center gap-2 text-[14px] font-[700]" style={{ color: "var(--c-ink-strong)" }}>
-                  <BadgeCheck className="h-4 w-4" style={{ color: "var(--c-primary)" }} />
-                  지역 운영 안내
-                </div>
-                <div className="mt-2 text-[13px]" style={{ color: "var(--c-muted)" }}>
-                  {BRAND.city} 중심으로 먼저 시작합니다. 신청 후 1~2영업일 내 연락드립니다.
-                </div>
-
-                {submitted ? (
-                  <div className="mt-3 rounded-[20px] p-3 text-[13px]" style={{ background: "rgba(0,213,99,0.14)", color: "var(--c-ink)" }}>
-                    안내 링크가 열렸어요. 작성 후 제출해 주세요.
-                  </div>
-                ) : null}
-              </div>
-            </Card>
+            </div>
           </motion.div>
         </div>
-      </section>
 
-      {/* PROCESS */}
-      <section id="process" className="py-16 md:py-20">
-        <div className="mx-auto grid gap-8 px-4 md:grid-cols-[0.95fr_1.05fr] md:items-center" style={{ maxWidth: MAX }}>
-          <motion.div {...fadeUp}>
-            <h2
-              style={{
-                fontSize: TOKENS.typography.scale.h2.size,
-                lineHeight: TOKENS.typography.scale.h2.lineHeight,
-                fontWeight: TOKENS.typography.scale.h2.weight as any,
-                color: "var(--c-ink-strong)",
-              }}
-            >
-              앱에 재고 제품을 등록만하면, 영업준비 끝!
-            </h2>
-            <p className="mt-2 text-[13px]" style={{ color: "var(--c-muted)" }}>
-              복잡하지 않아요. 1분이면 충분합니다.
-            </p>
-
-            <div className="mt-6 grid gap-3">
-              {[
-                { icon: <Package className="h-4 w-4" />, t: "1분 등록", d: "상품/가격/마감만 입력" },
-                { icon: <MessageCircle className="h-4 w-4" />, t: "자동 알림", d: "고객에게 즉시 예약 안내" },
-                { icon: <Clock className="h-4 w-4" />, t: "운영 간소화", d: "판매와 픽업만 집중" },
-              ].map((x, i) => (
-                <Card key={i} className="p-5 transition-transform duration-300 hover:-translate-y-1" style={{ boxShadow: "none" }}>
-                  <div className="flex items-center gap-2 text-[14px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
-                    <span className="grid h-8 w-8 place-items-center rounded-[20px]" style={{ background: "rgba(0,213,99,0.14)" }}>
-                      {x.icon}
-                    </span>
-                    {x.t}
-                  </div>
-                  <div className="mt-1 text-[13px]" style={{ color: "var(--c-muted)" }}>
-                    {x.d}
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </motion.div>
-
-          <div className="grid gap-4 md:grid-cols-3">
+        <div className="mx-auto px-4 pt-8" style={{ maxWidth: MAX }}>
+          <div className="grid gap-4 rounded-[22px] border border-[var(--c-border)] bg-[var(--c-surface)] px-6 py-5 md:grid-cols-3">
             {[
-              {
-                title: "등록",
-                desc: "오늘의 재고를 입력",
-              },
-              {
-                title: "예약",
-                desc: "알림을 받은 고객이 예약",
-              },
-              {
-                title: "판매",
-                desc: "매장 결제로 간단 마감",
-              },
-            ].map((step, i) => (
-              <motion.div key={step.title} {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.05 * i }}>
-                <Card className="overflow-hidden transition-transform duration-300 hover:-translate-y-1">
-                  <img src={STEP_IMAGES[i]} alt={`Process step ${i + 1}`} className="h-[180px] w-full object-cover" />
-                  <div className="p-4">
-                    <div className="text-[15px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
-                      {`${i + 1}. ${step.title}`}
-                    </div>
-                    <div className="mt-1 text-[13px]" style={{ color: "var(--c-muted)" }}>
-                      {step.desc}
-                    </div>
-                  </div>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* PROOF */}
-      <section id="proof" className="py-16 md:py-20">
-        <div className="mx-auto px-4" style={{ maxWidth: MAX }}>
-          <motion.div {...fadeUp} className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <h2
-                style={{
-                  fontSize: TOKENS.typography.scale.h2.size,
-                  lineHeight: TOKENS.typography.scale.h2.lineHeight,
-                  fontWeight: TOKENS.typography.scale.h2.weight as any,
-                  color: "var(--c-ink-strong)",
-                }}
-              >
-                신뢰가 있어야, 입점이 쉬워집니다.
-              </h2>
-              <p className="mt-2 max-w-[52ch] text-[13px]" style={{ color: "var(--c-muted)" }}>
-                매출과 환경을 동시에 잡는 운영 흐름을 수치와 후기 형태로 제시합니다. (수치/로고는 추후 업데이트)
-              </p>
-            </div>
-            <Button variant="outline" onClick={() => scrollToId("apply")}>
-              입점 신청하기 <ArrowRight className="h-4 w-4" />
-            </Button>
-          </motion.div>
-
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            {PROOF_METRICS.map((metric) => (
-              <Card key={metric.label} className="relative overflow-hidden p-5 transition-transform duration-300 hover:-translate-y-1">
-                <div className="pointer-events-none absolute inset-0 opacity-30 shine" />
-                <div className="text-[13px] font-[650]" style={{ color: "var(--c-muted)" }}>
-                  {metric.label}
-                </div>
-                <div className="mt-2 text-[26px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
-                  {metric.value}
-                </div>
-                <div className="text-[12px]" style={{ color: "var(--c-muted)" }}>
-                  {metric.note}
-                </div>
-              </Card>
-            ))}
-          </div>
-
-          <div className="mt-8 overflow-hidden rounded-[24px] border border-[var(--c-border)] bg-[var(--c-surface)] px-4 py-5">
-            <div className="marquee">
-              {[...LOGO_CHIPS, ...LOGO_CHIPS].map((chip, idx) => (
-                <div key={`${chip}-${idx}`} className="rounded-full border border-[var(--c-border)] bg-white px-4 py-2 text-[12px] font-[650] text-[var(--c-ink)]">
-                  {chip}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
-            {TESTIMONIALS.map((t) => (
-              <Card key={t.name} className="p-6 transition-transform duration-300 hover:-translate-y-1" style={{ boxShadow: "none" }}>
-                <div className="text-[14px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
-                  “{t.quote}”
-                </div>
-                <div className="mt-4 text-[12px]" style={{ color: "var(--c-muted)" }}>
-                  {t.name} · {t.role}
-                </div>
-              </Card>
+              { label: "누적 파트너 수익", value: "45.2억+" },
+              { label: "절감된 탄소 배출량", value: "12,400kg" },
+              { label: "재방문 고객 비율", value: "78.5%" },
+            ].map((x, i) => (
+              <div key={x.label} className={cn("text-center", i < 2 && "md:border-r md:border-[var(--c-border)]")}>
+                <div className="text-[12px] text-[var(--c-muted)]">{x.label}</div>
+                <div className="mt-1 text-[22px] font-[800]">{x.value}</div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* BENEFITS */}
-      <section id="benefits" className="py-16 md:py-20" style={{ background: "rgba(13,18,32,0.03)" }}>
+      <section id="benefits" className="py-16">
         <div className="mx-auto px-4" style={{ maxWidth: MAX }}>
-          <motion.div {...fadeUp} className="grid gap-8 md:grid-cols-[1fr_1.15fr] md:items-start">
-            <div>
-              <h2
-                style={{
-                  fontSize: TOKENS.typography.scale.h2.size,
-                  lineHeight: TOKENS.typography.scale.h2.lineHeight,
-                  fontWeight: TOKENS.typography.scale.h2.weight as any,
-                  color: "var(--c-ink-strong)",
-                }}
-              >
-                다양한 자영업 경험들을 바탕으로
-                <br className="hidden sm:block" />
-                오직 업주 입장에서 편의성을 최대로 높였어요
-              </h2>
-              <p className="mt-3 max-w-[46ch]" style={{ color: "var(--c-muted)" }}>
-                운영자의 고민을 줄이고, 매출과 회전율을 높이기 위한 기능만 담았습니다.
-              </p>
+          <motion.div {...fadeUp} className="text-center">
+            <div className="text-[12px] font-[700] tracking-[0.25em] text-[var(--c-primary)]">BENEFITS</div>
+            <h2 className="mt-3 text-[clamp(24px,3vw,36px)] font-[800]">마감 할인 서비스, 왜 필요할까요?</h2>
+            <p className="mt-3 text-[14px] text-[var(--c-muted)]">
+              식재료 낭비를 줄이는 가치 있는 활동이 동시에 매장 운영의 효율성을 극대화합니다.
+            </p>
+          </motion.div>
 
-              <div className="mt-6 grid gap-3">
-                {["현금흐름 안정", "운영 간소화", "고객 확장"].map((t) => (
-                  <Pill key={t} tone="green">
-                    {t}
-                  </Pill>
+          <div className="mt-10 grid gap-6 md:grid-cols-2">
+            {[
+              {
+                title: "재고 손실 최소화",
+                desc: "정성껏 만든 음식을 버리지 마세요. 당일 판매되지 않은 신선한 상품을 지역 고객에게 빠르게 연결하여 폐기 비용을 ",
+                highlight: "수익으로 전환",
+                tone: "green",
+                icon: <TrendingUp className="h-5 w-5" />,
+              },
+              {
+                title: "신규 고객 확보",
+                desc: "마감 할인으로 매장을 처음 방문한 고객이 단골이 됩니다. 오프라인 방문 유도를 통해 매장의 다른 상품까지 알릴 수 있는 ",
+                highlight: "훌륭한 마케팅 수단",
+                tone: "orange",
+                icon: <Users className="h-5 w-5" />,
+              },
+            ].map((x) => (
+              <Card key={x.title} className="border-transparent p-8" style={{ boxShadow: TOKENS.shadow.sm }}>
+                <div
+                  className={cn(
+                    "grid h-12 w-12 place-items-center rounded-[18px]",
+                    x.tone === "green" && "bg-[#E9FBEF] text-[#15A34A]",
+                    x.tone === "orange" && "bg-[#FFF1E7] text-[#F97316]"
+                  )}
+                >
+                  {x.icon}
+                </div>
+                <h3 className="mt-6 text-[20px] font-[800]">{x.title}</h3>
+                <p className="mt-3 text-[14px] text-[var(--c-muted)]">
+                  {x.desc}
+                  <span className={x.tone === "green" ? "text-[#16A34A] font-[700]" : "text-[#F97316] font-[700]"}>
+                    {x.highlight}
+                  </span>
+                  입니다.
+                </p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section id="process" className="py-16">
+        <div className="mx-auto px-4" style={{ maxWidth: MAX }}>
+          <div className="grid gap-6 md:grid-cols-[1.1fr_0.9fr] md:items-start">
+            <motion.div {...fadeUp}>
+              <div className="text-[12px] font-[700] tracking-[0.25em] text-[var(--c-accent)]">HOW IT WORKS</div>
+              <h2 className="mt-3 text-[clamp(26px,3.2vw,38px)] font-[800]">3단계로 끝나는 판매 프로세스</h2>
+            </motion.div>
+            <motion.div {...fadeUp} className="text-[14px] text-[var(--c-muted)]">
+              매장 운영에 방해되지 않도록 아주 간단하게 설계되었습니다. 스마트폰 하나면 충분합니다.
+            </motion.div>
+          </div>
+
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            {[
+              {
+                step: "01",
+                title: "상품 등록",
+                desc: "매일 남는 수량을 간편하게 입력하세요. 사진 한 장과 할인 가격만 설정하면 즉시 노출됩니다.",
+                icon: <Package className="h-5 w-5" />,
+              },
+              {
+                step: "02",
+                title: "고객 주문",
+                desc: "주변의 고객이 앱을 통해 주문하고 결제합니다. 사장님은 푸시 알림으로 확인만 하세요.",
+                icon: <Users className="h-5 w-5" />,
+              },
+              {
+                step: "03",
+                title: "픽업 완료",
+                desc: "고객이 매장에 직접 방문하여 픽업합니다. 대면 소통을 통해 고객과 신뢰를 쌓으세요.",
+                icon: <Store className="h-5 w-5" />,
+              },
+            ].map((x) => (
+              <Card key={x.step} className="relative border-transparent p-7" style={{ boxShadow: TOKENS.shadow.sm }}>
+                <div className="absolute left-6 top-4 text-[56px] font-[800] text-[#EFF2F7]">{x.step}</div>
+                <div className="relative z-10 grid h-12 w-12 place-items-center rounded-[18px] bg-white shadow-[0_6px_18px_rgba(15,23,42,0.08)]">
+                  {x.icon}
+                </div>
+                <h3 className="relative z-10 mt-6 text-[18px] font-[800]">{x.title}</h3>
+                <p className="relative z-10 mt-3 text-[14px] text-[var(--c-muted)]">{x.desc}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* OWNER FIRST */}
+      <section id="owner" className="py-16">
+        <div className="mx-auto px-4" style={{ maxWidth: MAX }}>
+          <motion.div {...fadeUp}>
+            <div className="text-[12px] font-[700] tracking-[0.25em] text-[var(--c-primary)]">OWNER FIRST</div>
+            <h2 className="mt-3 text-[clamp(24px,3vw,36px)] font-[800]">
+              다양한 자영업 경험을 바탕으로 오직
+              <br className="hidden sm:block" />
+              업주 입장에서 편의성을 높였습니다
+            </h2>
+          </motion.div>
+
+          <div className="mt-10 grid gap-5 md:grid-cols-4">
+            {[
+              {
+                title: "일일 정산",
+                desc: "정산 대기 시간 없이 매일매일 깔끔하게 정산해 드립니다.",
+                icon: <Wallet className="h-5 w-5" />,
+                tone: "#E9FBEF",
+              },
+              {
+                title: "판매 편의",
+                desc: "바쁜 영업 시간 중에도 3초면 상품 등록이 가능합니다.",
+                icon: <Store className="h-5 w-5" />,
+                tone: "#EEF6FF",
+              },
+              {
+                title: "저렴한 비용",
+                desc: "광고비와 입점비 부담 없이 합리적인 수수료로 시작하세요.",
+                icon: <TrendingUp className="h-5 w-5" />,
+                tone: "#FFF4E8",
+              },
+              {
+                title: "추가 고객",
+                desc: "매장 근처의 잠재 고객에게 우리 가게를 알릴 기회입니다.",
+                icon: <Users className="h-5 w-5" />,
+                tone: "#F6EDFF",
+              },
+            ].map((x) => (
+              <div key={x.title} className="rounded-[24px] border border-transparent p-6" style={{ background: x.tone }}>
+                <div className="grid h-10 w-10 place-items-center rounded-full bg-white/80">
+                  {x.icon}
+                </div>
+                <div className="mt-5 text-[16px] font-[800]">{x.title}</div>
+                <p className="mt-2 text-[13px] text-[var(--c-muted)]">{x.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PARTNER STORY */}
+      <section id="story" className="py-16">
+        <div className="mx-auto px-4" style={{ maxWidth: MAX }}>
+          <div className="rounded-[32px] bg-[linear-gradient(120deg,#0B1224,#0E2026,#0C2B33)] p-10 text-white md:p-12">
+            <div className="grid gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-center">
+              <div>
+                <div className="text-[14px] font-[700] text-[var(--c-primary)]">Partner Story</div>
+                <h3 className="mt-4 text-[clamp(26px,3vw,36px)] font-[800] leading-[1.25]">
+                  "마감 시간마다 버려지던
+                  <br />
+                  빵들이 이제는 효자 상품이
+                  <br />
+                  되었어요. 환경도 지키고
+                  <br />
+                  수익도 나니 일석이조죠."
+                </h3>
+                <div className="mt-6 flex items-center gap-3 text-[14px] text-white/70">
+                  <span className="grid h-10 w-10 place-items-center rounded-full bg-white/10">
+                    <Leaf className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <div className="font-[700] text-white">김민지 대표</div>
+                    <div>아뜰리에 베이커리 성수점</div>
+                  </div>
+                </div>
+              </div>
+              <div className="grid gap-4 md:grid-cols-2">
+                {[
+                  { label: "월 평균 수익", value: "+120만원", labelTone: "text-[var(--c-primary)]" },
+                  { label: "폐기율 감소", value: "92%", labelTone: "text-[var(--c-accent)]" },
+                ].map((x) => (
+                  <div key={x.label} className="rounded-[22px] border border-white/10 bg-white/5 p-6">
+                    <div className={cn("text-[13px]", x.labelTone)}>{x.label}</div>
+                    <div className="mt-2 text-[24px] font-[800] text-white">{x.value}</div>
+                  </div>
                 ))}
               </div>
             </div>
-
-            <div className="grid gap-4">
-              {[
-                {
-                  icon: <Wallet className="h-4 w-4" />,
-                  t: "일일 정산",
-                  d: "판매하신 금액을 모아두고 월단위로 정산하지 않아요. 판매 즉시 정산되어 현금 유동성 걱정이 없어요!",
-                },
-                {
-                  icon: <MessageCircle className="h-4 w-4" />,
-                  t: "판매 편의",
-                  d: "소비자는 내 가게 모든 제품, 혹은 특정 제품에 즉시 알람을 받고 구매 예약을 신청할 수 있어요!",
-                },
-                {
-                  icon: <CreditCard className="h-4 w-4" />,
-                  t: "저렴한 비용",
-                  d: "판매 금액에 대한 수수료 외, 가입비 / 입점료 / 홍보비 등 추가 지출이 없어요.",
-                },
-                {
-                  icon: <Sparkles className="h-4 w-4" />,
-                  t: "추가 고객",
-                  d: "홍보는 자연스럽게, 신규 고객 전환과 외부 고객 유입을 돕습니다.",
-                },
-              ].map((x, i) => (
-                <Card key={i} className="p-6 transition-transform duration-300 hover:-translate-y-1" style={{ boxShadow: "none" }}>
-                  <div className="flex items-center gap-2 text-[15px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
-                    <span className="grid h-9 w-9 place-items-center rounded-[20px]" style={{ background: "rgba(0,213,99,0.14)" }}>
-                      {x.icon}
-                    </span>
-                    {x.t}
-                  </div>
-                  <div className="mt-2 text-[13px]" style={{ color: "var(--c-muted)" }}>
-                    {x.d}
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="py-16 md:py-20">
+      <section id="faq" className="py-16">
         <div className="mx-auto px-4" style={{ maxWidth: MAX }}>
-          <motion.div {...fadeUp} className="grid gap-6 md:grid-cols-[1fr_1.2fr] md:items-start">
-            <div>
-              <h2
-                style={{
-                  fontSize: TOKENS.typography.scale.h2.size,
-                  lineHeight: TOKENS.typography.scale.h2.lineHeight,
-                  fontWeight: TOKENS.typography.scale.h2.weight as any,
-                  color: "var(--c-ink-strong)",
-                }}
-              >
-                자주 묻는 질문
-              </h2>
-              <p className="mt-3 max-w-[46ch]" style={{ color: "var(--c-muted)" }}>
-                상세한 내용은 상담에서 안내드립니다.
-              </p>
-            </div>
-
-            <div className="grid gap-3">
-              {[
-                { q: "고객이 제 시간에 안오면?", a: "지연 도착 기준과 처리 방식은 정책에 따라 안내드립니다. (내용 입력)" },
-                { q: "고객 예약 취소?", a: "취소 정책과 페널티는 사전 안내됩니다. (내용 입력)" },
-                { q: "판매량 제한 있는지?", a: "업장 상황에 맞게 유동적으로 설정할 수 있어요. (내용 입력)" },
-                { q: "이용금액?", a: "수수료 및 정산 방식은 안내자료로 제공됩니다. (내용 입력)" },
-                { q: "더 궁금하면요? (카톡 채널 QR)", a: "카카오톡 채널로 문의하시면 빠르게 답변드려요. (QR 교체 예정)" },
-              ].map((x, i) => (
-                <Card key={i} className="p-5" style={{ boxShadow: "none" }}>
-                  <div className="text-[15px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
-                    {x.q}
-                  </div>
-                  <div className="mt-2 text-[13px]" style={{ color: "var(--c-muted)" }}>
-                    {x.a}
-                  </div>
-                </Card>
-              ))}
-            </div>
+          <motion.div {...fadeUp} className="text-center">
+            <div className="text-[12px] font-[700] tracking-[0.25em] text-[var(--c-primary)]">FAQ</div>
+            <h2 className="mt-3 text-[clamp(24px,3vw,36px)] font-[800]">자주 묻는 질문</h2>
           </motion.div>
+          <div className="mx-auto mt-10 grid max-w-[760px] gap-4">
+            {[
+              "고객이 제 시간에 안 오면 어떡하나요?",
+              "예약을 취소하면 어떻게 되나요?",
+              "정산은 언제 되나요?",
+            ].map((q) => (
+              <Card key={q} className="flex items-center justify-between border-transparent px-6 py-5" style={{ boxShadow: TOKENS.shadow.sm }}>
+                <div className="text-[15px] font-[700]">{q}</div>
+                <ChevronDown className="h-4 w-4 text-[var(--c-muted)]" />
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* APPLY */}
-      <section id="apply" className="py-16 md:py-20" style={{ background: "rgba(13,18,32,0.03)" }}>
-        <div className="mx-auto grid gap-6 px-4 md:grid-cols-[1.1fr_0.9fr] md:items-start" style={{ maxWidth: MAX }}>
-          <motion.div {...fadeUp}>
-            <h2
-              style={{
-                fontSize: TOKENS.typography.scale.h2.size,
-                lineHeight: TOKENS.typography.scale.h2.lineHeight,
-                fontWeight: TOKENS.typography.scale.h2.weight as any,
-                color: "var(--c-ink-strong)",
-              }}
-            >
-              1분만에 입점하기
-            </h2>
-            <p className="mt-3 max-w-[54ch]" style={{ color: "var(--c-muted)" }}>
-              앱 설치 후 바로 신청 가능합니다. QR을 스캔해 주세요.
-            </p>
-
-            <div className="mt-6 grid gap-3">
-              {[
-                { icon: <MapPin className="h-4 w-4" />, t: "지역", d: `${BRAND.city} 중심 (순차 확대)` },
-                { icon: <Leaf className="h-4 w-4" />, t: "업종", d: BRAND.categories },
-                { icon: <Sparkles className="h-4 w-4" />, t: "혜택", d: BRAND.promo },
-              ].map((x, i) => (
-                <div key={i} className="flex items-center gap-3 rounded-[20px] border border-[var(--c-border)] bg-[var(--c-surface)] p-4" style={{ boxShadow: "none" }}>
-                  <div className="grid h-10 w-10 place-items-center rounded-[20px]" style={{ background: "rgba(0,213,99,0.14)", color: "var(--c-ink-strong)" }}>
-                    {x.icon}
-                  </div>
-                  <div>
-                    <div className="text-[14px] font-[700]" style={{ color: "var(--c-ink-strong)" }}>
-                      {x.t}
+      {/* CTA */}
+      <section id="apply" className="py-16">
+        <div className="mx-auto px-4" style={{ maxWidth: MAX }}>
+          <div className="rounded-[32px] bg-[var(--c-surface)] p-8 md:p-12" style={{ boxShadow: TOKENS.shadow.sm }}>
+            <div className="grid gap-8 md:grid-cols-[1.1fr_0.9fr] md:items-center">
+              <div>
+                <div className="text-[12px] font-[700] tracking-[0.25em] text-[var(--c-primary)]">START NOW</div>
+                <h2 className="mt-3 text-[clamp(26px,3.2vw,38px)] font-[800] leading-[1.2]">
+                  1분 만에 입점하고
+                  <br />
+                  수익을 만들어보세요
+                </h2>
+                <div className="mt-6 grid gap-3 text-[14px] text-[var(--c-ink)]">
+                  {["입점비 0원", "광고비 0원"].map((x) => (
+                    <div key={x} className="flex items-center gap-2 font-[700]">
+                      <span className="grid h-5 w-5 place-items-center rounded-full bg-[var(--c-primary)] text-white">
+                        <Check className="h-3 w-3" />
+                      </span>
+                      {x}
                     </div>
-                    <div className="text-[13px]" style={{ color: "var(--c-muted)" }}>
-                      {x.d}
+                  ))}
+                </div>
+                <div className="mt-8 rounded-[20px] border border-[var(--c-border)] bg-white px-5 py-4">
+                  <div className="flex items-center gap-4">
+                    <div className="grid h-14 w-14 place-items-center rounded-[14px] border border-[var(--c-border)] bg-[var(--c-surface)]">
+                      <span className="text-[12px] text-[var(--c-muted)]">QR</span>
+                    </div>
+                    <div>
+                      <div className="text-[14px] font-[700]">앱 다운로드</div>
+                      <div className="text-[12px] text-[var(--c-muted)]">QR 코드를 스캔하여 파트너 앱을 설치하세요</div>
                     </div>
                   </div>
                 </div>
-              ))}
+              </div>
+
+              <Card className="border-transparent p-7" style={{ boxShadow: TOKENS.shadow.sm }}>
+                <div className="text-center text-[16px] font-[800]">입점 신청하기</div>
+                <div className="mt-6 grid gap-3">
+                  <Button variant="primary">
+                    지금 바로 입점 신청하기
+                  </Button>
+                  <Button variant="kakao">
+                    <MessageCircle className="h-4 w-4" />
+                    카카오톡 상담하기
+                  </Button>
+                </div>
+                <div className="mt-4 text-center text-[11px] text-[var(--c-muted)]">
+                  신청 완료 후 담당자가 24시간 이내에 연락드립니다.
+                </div>
+              </Card>
             </div>
-          </motion.div>
-
-          <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.08 }}>
-            <Card className="p-6" style={{ boxShadow: "var(--sh-md)" } as any}>
-              <div className="text-[18px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
-                입점 신청 / 무료 상담
-              </div>
-              <p className="mt-2 text-[13px]" style={{ color: "var(--c-muted)" }}>
-                아래 버튼 중 편한 방법으로 진행하세요.
-              </p>
-
-              <div className="mt-5 grid gap-3">
-                <Button variant="primary" onClick={openApply}>
-                  입점 신청하기 <ArrowRight className="h-4 w-4" />
-                </Button>
-                <Button variant="outline" onClick={openCall}>
-                  무료 상담받기 <Phone className="h-4 w-4" />
-                </Button>
-              </div>
-
-              <div className="mt-6 grid gap-4">
-                <div className="rounded-[20px] border border-[var(--c-border)] bg-[var(--c-surface)] p-4 glow-ring" style={{ boxShadow: "none" }}>
-                  <div className="flex items-center gap-2 text-[14px] font-[700]" style={{ color: "var(--c-ink-strong)" }}>
-                    <Package className="h-4 w-4" style={{ color: "var(--c-primary)" }} />
-                    앱다운 QR
-                  </div>
-                  <img src={QR_PLACEHOLDER} alt="App QR" className="mt-3 h-[180px] w-full max-w-[180px]" />
-                </div>
-
-                <div className="rounded-[20px] border border-[var(--c-border)] bg-[var(--c-surface)] p-4" style={{ boxShadow: "none" }}>
-                  <div className="flex items-center gap-2 text-[14px] font-[700]" style={{ color: "var(--c-ink-strong)" }}>
-                    <MessageCircle className="h-4 w-4" style={{ color: "var(--c-primary)" }} />
-                    컨택 포인트
-                  </div>
-                  <div className="mt-2 text-[13px]" style={{ color: "var(--c-muted)" }}>
-                    메일: hello@saveit.co (수정 예정)
-                  </div>
-                  <div className="mt-1 text-[13px]" style={{ color: "var(--c-muted)" }}>
-                    문자: {BRAND.phoneDisplay} (수정 예정)
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-[var(--c-border)] bg-[var(--c-surface)]">
+      <footer className="border-t border-[var(--c-border)] bg-white">
         <div className="mx-auto px-4 py-12" style={{ maxWidth: MAX }}>
-          <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
-            <div className="space-y-2">
+          <div className="grid gap-10 md:grid-cols-[1.2fr_1fr_1fr_1fr]">
+            <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <div className="grid h-9 w-9 place-items-center rounded-[20px]" style={{ background: "rgba(0,213,99,0.14)" }}>
+                <span className="grid h-8 w-8 place-items-center rounded-full bg-[rgba(0,213,99,0.15)]">
                   <Leaf className="h-4 w-4" style={{ color: "var(--c-primary)" }} />
-                </div>
-                <div className="text-[14px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
-                  {BRAND.name}
-                </div>
+                </span>
+                <span className="text-[15px] font-[800]">{BRAND.name}</span>
               </div>
-              <div className="text-[13px]" style={{ color: "var(--c-muted)" }}>
-                {BRAND.city} 지역 소비기한 임박 상품 예약 판매 플랫폼
+              <div className="text-[13px] text-[var(--c-muted)]">
+                세이브잇(Save It)
+                <br />
+                강남 지역 신선식품 예약 판매 플랫폼
+              </div>
+              <div className="flex gap-3 text-[12px] text-[var(--c-muted)]">
+                <span className="h-8 w-8 rounded-full border border-[var(--c-border)]" />
+                <span className="h-8 w-8 rounded-full border border-[var(--c-border)]" />
               </div>
             </div>
 
-            <div className="grid gap-2 text-[13px]" style={{ color: "var(--c-muted)" }}>
-              <div className="text-[14px] font-[700]" style={{ color: "var(--c-ink-strong)" }}>
-                안내
-              </div>
-              <button className="text-left hover:text-[var(--c-ink)]" onClick={() => scrollToId("process")}>
-                이용 방법
-              </button>
-              <button className="text-left hover:text-[var(--c-ink)]" onClick={() => scrollToId("proof")}>
-                신뢰
-              </button>
-              <button className="text-left hover:text-[var(--c-ink)]" onClick={() => scrollToId("benefits")}>
-                입점 메리트
-              </button>
-              <button className="text-left hover:text-[var(--c-ink)]" onClick={() => scrollToId("faq")}>
-                FAQ
-              </button>
-              <button className="text-left hover:text-[var(--c-ink)]" onClick={() => scrollToId("apply")}>
-                입점 신청
-              </button>
+            <div className="space-y-3 text-[13px] text-[var(--c-muted)]">
+              <div className="text-[14px] font-[700] text-[var(--c-ink)]">서비스</div>
+              <div>파트너 센터</div>
+              <div>이용약관</div>
+              <div>개인정보처리방침</div>
+              <div>운영정책</div>
             </div>
 
-            <div className="grid gap-2 text-[13px]" style={{ color: "var(--c-muted)" }}>
-              <div className="text-[14px] font-[700]" style={{ color: "var(--c-ink-strong)" }}>
-                문의
-              </div>
-              <div>
-                전화:{" "}
-                <a className="font-[700] underline" href={`tel:${BRAND.phone}`}>
-                  {BRAND.phoneDisplay}
-                </a>
-              </div>
+            <div className="space-y-3 text-[13px] text-[var(--c-muted)]">
+              <div className="text-[14px] font-[700] text-[var(--c-ink)]">고객지원</div>
+              <div>자주 묻는 질문</div>
+              <div>공지사항</div>
+              <div>1:1 문의</div>
+              <div className="pt-2 text-[15px] font-[800] text-[var(--c-ink)]">1588-0000</div>
+              <div className="text-[12px]">평일 09:00 - 18:00 (주말 공휴일 제외)</div>
+            </div>
+
+            <div className="space-y-3 text-[13px] text-[var(--c-muted)]">
+              <div className="text-[14px] font-[700] text-[var(--c-ink)]">사업자 정보</div>
+              <div>상호명: (주)세이브잇코리아</div>
+              <div>대표자: 홍길동</div>
+              <div>사업자번호: 000-00-00000</div>
+              <div>주소: 서울특별시 강남구 테헤란로 123 세이브타워</div>
+              <div>이메일: partner@saveit.co.kr</div>
             </div>
           </div>
 
-          <div className="mt-10 text-[13px]" style={{ color: "var(--c-muted)" }}>
-            © {new Date().getFullYear()} {BRAND.name}. All rights reserved.
+          <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-[var(--c-border)] pt-6 text-[12px] text-[var(--c-muted)] md:flex-row">
+            <div>© 2024 SAVE IT INC. ALL RIGHTS RESERVED.</div>
+            <div className="flex gap-6 font-[700] tracking-[0.15em]">
+              <span>INSTAGRAM</span>
+              <span>BLOG</span>
+              <span>FACEBOOK</span>
+            </div>
           </div>
         </div>
       </footer>
-
-      {/* Sticky CTA (mobile) */}
-      <div className="pointer-events-none fixed bottom-0 left-0 right-0 z-50 md:hidden">
-        <div className="pointer-events-auto mx-auto px-4 pb-4" style={{ maxWidth: MAX }}>
-          <div className="rounded-[20px] border border-[var(--c-border)] bg-[rgba(255,255,255,0.92)] p-3 backdrop-blur" style={{ boxShadow: "var(--sh-md)" }}>
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="min-w-0">
-                <div className="truncate text-[14px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
-                  {BRAND.promo} · {BRAND.city} 지역 입점
-                </div>
-                <div className="truncate text-[13px]" style={{ color: "var(--c-muted)" }}>
-                  등록 1분 · 예약 판매 · 매장 결제
-                </div>
-              </div>
-              <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
-                <Button variant="outline" onClick={openCall} className="h-10 w-full px-3 text-[14px] sm:h-12 sm:w-auto">
-                  상담
-                </Button>
-                <Button variant="primary" onClick={() => scrollToId("apply")} className="h-10 w-full px-3 text-[14px] sm:h-12 sm:w-auto">
-                  신청 <ArrowRight className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="h-20 md:h-0" />
     </div>
   );
 }
