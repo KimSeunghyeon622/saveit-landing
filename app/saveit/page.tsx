@@ -255,7 +255,7 @@ function Card({
 }) {
   return (
     <div
-      className={cn("rounded-[20px] bg-[var(--c-surface)] border border-[var(--c-border)]", className)}
+      className={cn("min-w-0 rounded-[20px] bg-[var(--c-surface)] border border-[var(--c-border)]", className)}
       style={{ boxShadow: "var(--sh-sm)", ...style }}
     >
       {children}
@@ -314,7 +314,7 @@ export default function SaveItLandingTokenized() {
   );
 
   return (
-    <div style={cssVars} className="relative min-h-screen bg-[var(--c-bg)] text-[var(--c-ink)]">
+    <div style={cssVars} className="relative min-h-screen overflow-x-hidden bg-[var(--c-bg)] text-[var(--c-ink)]">
       {/* Fonts (2 only) + Korean wrapping fix */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;750&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap');
@@ -324,8 +324,10 @@ export default function SaveItLandingTokenized() {
           line-height: ${TOKENS.typography.scale.body.lineHeight};
           word-break: keep-all;
           overflow-wrap: break-word;
+          overflow-x: hidden;
         }
         h1, h2, h3 { font-family: ${TOKENS.typography.font.display}, ${TOKENS.typography.font.body}, ui-sans-serif; }
+        img { max-width: 100%; height: auto; display: block; }
         .float-slow { animation: floatY 10s ease-in-out infinite; }
         .float-medium { animation: floatY 7s ease-in-out infinite; }
         .float-fast { animation: floatY 5s ease-in-out infinite; }
@@ -413,7 +415,7 @@ export default function SaveItLandingTokenized() {
 
       {/* HERO */}
       <section
-        className="relative overflow-hidden py-20"
+        className="relative overflow-hidden py-16 md:py-20"
         style={{
           backgroundImage: `linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.78)), url(${HERO_BG})`,
           backgroundSize: "cover",
@@ -532,7 +534,7 @@ export default function SaveItLandingTokenized() {
       </section>
 
       {/* PROCESS */}
-      <section id="process" className="py-20">
+      <section id="process" className="py-16 md:py-20">
         <div className="mx-auto grid gap-8 px-4 md:grid-cols-[0.95fr_1.05fr] md:items-center" style={{ maxWidth: MAX }}>
           <motion.div {...fadeUp}>
             <h2
@@ -604,7 +606,7 @@ export default function SaveItLandingTokenized() {
       </section>
 
       {/* PROOF */}
-      <section id="proof" className="py-20">
+      <section id="proof" className="py-16 md:py-20">
         <div className="mx-auto px-4" style={{ maxWidth: MAX }}>
           <motion.div {...fadeUp} className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
@@ -670,7 +672,7 @@ export default function SaveItLandingTokenized() {
       </section>
 
       {/* BENEFITS */}
-      <section id="benefits" className="py-20" style={{ background: "rgba(13,18,32,0.03)" }}>
+      <section id="benefits" className="py-16 md:py-20" style={{ background: "rgba(13,18,32,0.03)" }}>
         <div className="mx-auto px-4" style={{ maxWidth: MAX }}>
           <motion.div {...fadeUp} className="grid gap-8 md:grid-cols-[1fr_1.15fr] md:items-start">
             <div>
@@ -740,7 +742,7 @@ export default function SaveItLandingTokenized() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="py-20">
+      <section id="faq" className="py-16 md:py-20">
         <div className="mx-auto px-4" style={{ maxWidth: MAX }}>
           <motion.div {...fadeUp} className="grid gap-6 md:grid-cols-[1fr_1.2fr] md:items-start">
             <div>
@@ -782,7 +784,7 @@ export default function SaveItLandingTokenized() {
       </section>
 
       {/* APPLY */}
-      <section id="apply" className="py-20" style={{ background: "rgba(13,18,32,0.03)" }}>
+      <section id="apply" className="py-16 md:py-20" style={{ background: "rgba(13,18,32,0.03)" }}>
         <div className="mx-auto grid gap-6 px-4 md:grid-cols-[1.1fr_0.9fr] md:items-start" style={{ maxWidth: MAX }}>
           <motion.div {...fadeUp}>
             <h2
@@ -846,7 +848,7 @@ export default function SaveItLandingTokenized() {
                     <Package className="h-4 w-4" style={{ color: "var(--c-primary)" }} />
                     앱다운 QR
                   </div>
-                  <img src={QR_PLACEHOLDER} alt="App QR" className="mt-3 h-[180px] w-[180px]" />
+                  <img src={QR_PLACEHOLDER} alt="App QR" className="mt-3 h-[180px] w-full max-w-[180px]" />
                 </div>
 
                 <div className="rounded-[20px] border border-[var(--c-border)] bg-[var(--c-surface)] p-4" style={{ boxShadow: "none" }}>
@@ -929,7 +931,7 @@ export default function SaveItLandingTokenized() {
       <div className="pointer-events-none fixed bottom-0 left-0 right-0 z-50 md:hidden">
         <div className="pointer-events-auto mx-auto px-4 pb-4" style={{ maxWidth: MAX }}>
           <div className="rounded-[20px] border border-[var(--c-border)] bg-[rgba(255,255,255,0.92)] p-3 backdrop-blur" style={{ boxShadow: "var(--sh-md)" }}>
-            <div className="flex items-center justify-between gap-3">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div className="min-w-0">
                 <div className="truncate text-[14px] font-[750]" style={{ color: "var(--c-ink-strong)" }}>
                   {BRAND.promo} · {BRAND.city} 지역 입점
@@ -938,11 +940,11 @@ export default function SaveItLandingTokenized() {
                   등록 1분 · 예약 판매 · 매장 결제
                 </div>
               </div>
-              <div className="flex shrink-0 items-center gap-2">
-                <Button variant="outline" onClick={openCall}>
+              <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+                <Button variant="outline" onClick={openCall} className="h-10 w-full px-3 text-[14px] sm:h-12 sm:w-auto">
                   상담
                 </Button>
-                <Button variant="primary" onClick={() => scrollToId("apply")}>
+                <Button variant="primary" onClick={() => scrollToId("apply")} className="h-10 w-full px-3 text-[14px] sm:h-12 sm:w-auto">
                   신청 <ArrowRight className="h-4 w-4" />
                 </Button>
               </div>
