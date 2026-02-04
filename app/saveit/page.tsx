@@ -256,6 +256,20 @@ export default function SaveItLanding() {
                 tone: "orange",
                 icon: <Users className="h-5 w-5" />,
               },
+              {
+                title: "평균 객단가 증가",
+                desc: "마감 할인으로 방문한 고객 중 약 40%가 추가 구매를 진행하며, 평균 추가 구매액은 ",
+                highlight: "13,000원+",
+                tone: "green",
+                icon: <Wallet className="h-5 w-5" />,
+              },
+              {
+                title: "ESG·지구 살리기",
+                desc: "음식물 낭비를 줄이고 지역사회와 함께 지속가능한 소비에 동참하세요. 매장의 선한 활동이 ",
+                highlight: "브랜드 신뢰로 연결",
+                tone: "orange",
+                icon: <Leaf className="h-5 w-5" />,
+              },
             ].map((x) => (
               <Card key={x.title} className="border-transparent p-8" style={{ boxShadow: TOKENS.shadow.sm }}>
                 <div
@@ -288,10 +302,11 @@ export default function SaveItLanding() {
             <motion.div {...fadeUp}>
               <div className="text-[12px] font-[700] tracking-[0.25em] text-[var(--c-accent)]">HOW IT WORKS</div>
               <h2 className="mt-3 text-[clamp(26px,3.2vw,38px)] font-[800]">3단계로 끝나는 판매 프로세스</h2>
+              <p className="mt-3 text-[14px] text-[var(--c-muted)]">
+                매우 간단한 조작으로, 스마트폰 하나면 충분합니다.
+              </p>
             </motion.div>
-            <motion.div {...fadeUp} className="text-[14px] text-[var(--c-muted)]">
-              매우 간단한 조작으로, 스마트폰 하나면 충분합니다.
-            </motion.div>
+            <div />
           </div>
 
           <div className="mt-10 grid gap-6 md:grid-cols-3">
@@ -359,6 +374,7 @@ export default function SaveItLanding() {
                 desc: "광고/입점/판매 수수료 없이, 소정의 플랫폼 이용료면 충분합니다.",
                 icon: <TrendingUp className="h-5 w-5" />,
                 tone: "#FFF4E8",
+                note: "이용료 3개월 무료 제공중",
               },
               {
                 title: "추가 고객",
@@ -373,6 +389,9 @@ export default function SaveItLanding() {
                 </div>
                 <div className="mt-5 text-[16px] font-[800]">{x.title}</div>
                 <p className="mt-2 text-[13px] text-[var(--c-muted)]">{x.desc}</p>
+                {"note" in x && x.note ? (
+                  <div className="mt-2 text-[12px] font-[700] text-[var(--c-accent)]">{x.note}</div>
+                ) : null}
               </div>
             ))}
           </div>
