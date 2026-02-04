@@ -142,24 +142,53 @@ export default function SaveItLanding() {
   const MAX = TOKENS.layout.maxWidth;
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [rollingRevenue, setRollingRevenue] = useState(500_000);
-  const rollingValueRef = useRef(500_000);
+  const [rollingAov, setRollingAov] = useState(11_000);
+  const [rollingNewCust, setRollingNewCust] = useState(30);
+  const revenueRef = useRef(500_000);
+  const aovRef = useRef(11_000);
+  const newCustRef = useRef(30);
   const lastTimeRef = useRef<number | null>(null);
   useEffect(() => {
-    const min = 500_000;
-    const max = 3_000_000;
-    const range = max - min;
-    const speed = 800_000; // amount per second
+    const revMin = 500_000;
+    const revMax = 3_000_000;
+    const revRange = revMax - revMin;
+    const revSpeed = 640_000; // 20% slower than previous 800,000
+
+    const aovMin = 11_000;
+    const aovMax = 35_000;
+    const aovRange = aovMax - aovMin;
+    const aovSpeed = 4_000; // slower, small numbers
+
+    const newMin = 30;
+    const newMax = 90;
+    const newRange = newMax - newMin;
+    const newSpeed = 8; // slower, small numbers
+
     let raf = 0;
     const tick = (time: number) => {
       const last = lastTimeRef.current ?? time;
       const dt = (time - last) / 1000;
       lastTimeRef.current = time;
-      let next = rollingValueRef.current + speed * dt;
-      if (next > max) {
-        next = min + ((next - max) % range);
+      let nextRev = revenueRef.current + revSpeed * dt;
+      if (nextRev > revMax) {
+        nextRev = revMin + ((nextRev - revMax) % revRange);
       }
-      rollingValueRef.current = next;
-      setRollingRevenue(Math.floor(next));
+      revenueRef.current = nextRev;
+      setRollingRevenue(Math.floor(nextRev));
+
+      let nextAov = aovRef.current + aovSpeed * dt;
+      if (nextAov > aovMax) {
+        nextAov = aovMin + ((nextAov - aovMax) % aovRange);
+      }
+      aovRef.current = nextAov;
+      setRollingAov(Math.floor(nextAov));
+
+      let nextNew = newCustRef.current + newSpeed * dt;
+      if (nextNew > newMax) {
+        nextNew = newMin + ((nextNew - newMax) % newRange);
+      }
+      newCustRef.current = nextNew;
+      setRollingNewCust(Math.floor(nextNew));
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -241,15 +270,29 @@ export default function SaveItLanding() {
           <div className="grid gap-4 rounded-[22px] border border-[var(--c-border)] bg-[var(--c-surface)] px-6 py-5 md:grid-cols-3">
             {[
               {
-                label: "누적 파트너 수익",
+                label: "추가 기대 수익",
                 value: (
                   <span className="tabular-nums tracking-[0.04em]">
                     {rollingRevenue.toLocaleString("ko-KR")}원
                   </span>
                 ),
               },
-              { label: "절감된 탄소 배출량", value: "12,400kg" },
-              { label: "재방문 고객 비율", value: "78.5%" },
+              {
+                label: "객단가 상승",
+                value: (
+                  <span className="tabular-nums tracking-[0.04em]">
+                    {rollingAov.toLocaleString("ko-KR")}원
+                  </span>
+                ),
+              },
+              {
+                label: "신규 고객 유입",
+                value: (
+                  <span className="tabular-nums tracking-[0.04em]">
+                    월 {rollingNewCust.toLocaleString("ko-KR")}명
+                  </span>
+                ),
+              },
             ].map((x, i) => (
               <div key={x.label} className={cn("text-center", i < 2 && "md:border-r md:border-[var(--c-border)]")}>
                 <div className="text-[12px] text-[var(--c-muted)]">{x.label}</div>
