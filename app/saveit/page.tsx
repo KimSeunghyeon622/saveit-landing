@@ -266,7 +266,7 @@ export default function SaveItLanding() {
               },
             ].map((x, i) => (
               <div key={x.label} className={cn("text-center", i < 2 && "md:border-r md:border-[var(--c-border)]")}>
-                <div className="text-[12px] text-[var(--c-muted)]">{x.label}</div>
+                <div className="text-[14px] font-[700] text-[#16A34A]">{x.label}</div>
                 <div className="mt-1 text-[22px] font-[800]">{x.value}</div>
               </div>
             ))}
