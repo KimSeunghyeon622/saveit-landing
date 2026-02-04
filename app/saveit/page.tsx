@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -87,21 +87,36 @@ function Button({
   variant = "primary",
   className,
   onClick,
+  href,
   children,
 }: {
   variant?: "primary" | "outline" | "kakao";
   className?: string;
   onClick?: () => void;
+  href?: string;
   children: React.ReactNode;
 }) {
   const base =
-    "inline-flex items-center justify-center gap-2 select-none whitespace-nowrap rounded-full text-[15px] font-[700] transition";
+    "inline-flex items-center justify-center gap-2 select-none whitespace-nowrap rounded-full text-[15px] font-[700] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--c-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-white hover:-translate-y-0.5 hover:shadow-[0_10px_20px_rgba(15,23,42,0.12)] active:translate-y-0 active:shadow-[0_6px_14px_rgba(15,23,42,0.1)]";
   const styles: Record<typeof variant, string> = {
     primary: "h-12 px-6 text-white bg-[var(--c-primary)] hover:brightness-95",
     outline:
       "h-12 px-6 border border-[var(--c-border)] text-[var(--c-ink)] bg-white hover:bg-[rgba(15,23,42,0.03)]",
     kakao: "h-12 px-6 text-[#3C1E1E] bg-[var(--c-kakao)] hover:brightness-95",
   };
+  if (href) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={onClick}
+        className={cn(base, styles[variant], className)}
+      >
+        {children}
+      </a>
+    );
+  }
   return (
     <button onClick={onClick} className={cn(base, styles[variant], className)}>
       {children}
@@ -130,6 +145,7 @@ function Card({
 
 export default function SaveItLanding() {
   const MAX = TOKENS.layout.maxWidth;
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
   const cssVars = useMemo(
     () =>
       ({
@@ -181,10 +197,13 @@ export default function SaveItLanding() {
             </p>
 
             <div className="flex flex-wrap gap-3">
-              <Button variant="primary">
+              <Button
+                variant="primary"
+                href="https://docs.google.com/forms/d/e/1FAIpQLSdxYX4iorhQGRW3J0gHF40KWQDuOUi0t6TywOvTaaRVIsDcHg/viewform"
+              >
                 바로 신청하기 <ArrowRight className="h-4 w-4" />
               </Button>
-              <Button variant="outline">
+              <Button variant="outline" href="https://open.kakao.com/o/gb2ZqRei">
                 카카오 상담하기
               </Button>
             </div>
@@ -416,13 +435,37 @@ export default function SaveItLanding() {
           </motion.div>
           <div className="mx-auto mt-10 grid max-w-[760px] gap-4">
             {[
-              "고객이 제 시간에 안 오면 어떡하나요?",
-              "예약을 취소하면 어떻게 되나요?",
-              "정산은 언제 되나요?",
-            ].map((q) => (
-              <Card key={q} className="flex items-center justify-between border-transparent px-6 py-5" style={{ boxShadow: TOKENS.shadow.sm }}>
-                <div className="text-[15px] font-[700]">{q}</div>
-                <ChevronDown className="h-4 w-4 text-[var(--c-muted)]" />
+              {
+                q: "고객이 제 시간에 안 오면 어떡하나요?",
+                a: "노쇼 발생 시 자동으로 재노출되며, 매장 설정에 따라 즉시 판매 전환이나 다음 시간대 예약을 받을 수 있어요.",
+              },
+              {
+                q: "예약을 취소하면 어떻게 되나요?",
+                a: "취소 알림이 즉시 전달되고, 동일 상품은 다음 고객에게 자동으로 노출됩니다.",
+              },
+              {
+                q: "정산은 언제 되나요?",
+                a: "주문 완료 기준으로 일일 정산되며, 영업일 기준 1~2일 내 입금됩니다.",
+              },
+            ].map((item, i) => (
+              <Card key={item.q} className="border-transparent" style={{ boxShadow: TOKENS.shadow.sm }}>
+                <button
+                  type="button"
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  aria-expanded={openFaq === i}
+                  className="flex w-full items-center justify-between px-6 py-5 text-left"
+                >
+                  <div className="text-[15px] font-[700]">{item.q}</div>
+                  <ChevronDown
+                    className={cn(
+                      "h-4 w-4 text-[var(--c-muted)] transition-transform duration-200",
+                      openFaq === i && "rotate-180"
+                    )}
+                  />
+                </button>
+                {openFaq === i && (
+                  <div className="px-6 pb-5 text-[14px] text-[var(--c-muted)]">{item.a}</div>
+                )}
               </Card>
             ))}
           </div>
@@ -467,10 +510,13 @@ export default function SaveItLanding() {
               <Card className="border-transparent p-7" style={{ boxShadow: TOKENS.shadow.sm }}>
                 <div className="text-center text-[16px] font-[800]">입점 신청하기</div>
                 <div className="mt-6 grid gap-3">
-                  <Button variant="primary">
+                  <Button
+                    variant="primary"
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSdxYX4iorhQGRW3J0gHF40KWQDuOUi0t6TywOvTaaRVIsDcHg/viewform"
+                  >
                     지금 바로 입점 신청하기
                   </Button>
-                  <Button variant="kakao">
+                  <Button variant="kakao" href="https://open.kakao.com/o/gb2ZqRei">
                     <MessageCircle className="h-4 w-4" />
                     카카오톡 상담하기
                   </Button>
@@ -487,58 +533,19 @@ export default function SaveItLanding() {
       {/* FOOTER */}
       <footer className="border-t border-[var(--c-border)] bg-white">
         <div className="mx-auto px-4 py-12" style={{ maxWidth: MAX }}>
-          <div className="grid gap-10 md:grid-cols-[1.2fr_1fr_1fr_1fr]">
-            <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <span className="grid h-8 w-8 place-items-center rounded-full bg-[rgba(0,213,99,0.15)]">
-                  <Leaf className="h-4 w-4" style={{ color: "var(--c-primary)" }} />
-                </span>
-                <span className="text-[15px] font-[800]">{BRAND.name}</span>
-              </div>
-              <div className="text-[13px] text-[var(--c-muted)]">
-                세이브잇(Save It)
-                <br />
-                강남 지역 신선식품 예약 판매 플랫폼
-              </div>
-              <div className="flex gap-3 text-[12px] text-[var(--c-muted)]">
-                <span className="h-8 w-8 rounded-full border border-[var(--c-border)]" />
-                <span className="h-8 w-8 rounded-full border border-[var(--c-border)]" />
-              </div>
+          <div className="grid gap-10 md:grid-cols-[1fr_2fr]">
+            <div className="space-y-3 text-[13px] text-[var(--c-muted)]">
+              <div className="text-[14px] font-[700] text-[var(--c-ink)]">이용약관</div>
+              <div className="text-[14px] font-[700] text-[var(--c-ink)]">개인정보처리방침</div>
+              <div className="text-[14px] font-[700] text-[var(--c-ink)]">사업자정보</div>
             </div>
 
             <div className="space-y-3 text-[13px] text-[var(--c-muted)]">
-              <div className="text-[14px] font-[700] text-[var(--c-ink)]">서비스</div>
-              <div>파트너 센터</div>
-              <div>이용약관</div>
-              <div>개인정보처리방침</div>
-              <div>운영정책</div>
-            </div>
-
-            <div className="space-y-3 text-[13px] text-[var(--c-muted)]">
-              <div className="text-[14px] font-[700] text-[var(--c-ink)]">고객지원</div>
-              <div>자주 묻는 질문</div>
-              <div>공지사항</div>
-              <div>1:1 문의</div>
-              <div className="pt-2 text-[15px] font-[800] text-[var(--c-ink)]">010-5636-7386 </div>
-              <div className="text-[12px]">평일 10:00 - 22:00 (주말 공휴일 포함)</div>
-            </div>
-
-            <div className="space-y-3 text-[13px] text-[var(--c-muted)]">
-              <div className="text-[14px] font-[700] text-[var(--c-ink)]">사업자 정보</div>
               <div>상호명: 비비(BB)컴퍼니</div>
               <div>대표자: 김민지</div>
               <div>사업자번호: 350-33-01601</div>
               <div>주소: 경기도 성남시 분당구 정자동 7, 두산위브파빌리온</div>
               <div>이메일: bb_career@naver.com</div>
-            </div>
-          </div>
-
-          <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-[var(--c-border)] pt-6 text-[12px] text-[var(--c-muted)] md:flex-row">
-            <div>© 2024 SAVE IT INC. ALL RIGHTS RESERVED.</div>
-            <div className="flex gap-6 font-[700] tracking-[0.15em]">
-              <span>INSTAGRAM</span>
-              <span>BLOG</span>
-              <span>FACEBOOK</span>
             </div>
           </div>
         </div>
