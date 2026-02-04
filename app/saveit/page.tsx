@@ -539,7 +539,7 @@ export default function SaveItLanding() {
           <div className="grid gap-10 md:grid-cols-[1fr_2fr]">
             <div className="space-y-3 text-[13px] text-[var(--c-muted)]">
               <a
-                href="/saveit/terms"
+                href="/saveit"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-[14px] font-[700] text-[var(--c-ink)] transition-colors hover:text-[var(--c-accent)]"
@@ -547,7 +547,7 @@ export default function SaveItLanding() {
                 이용약관
               </a>
               <a
-                href="/saveit/privacy"
+                href="/saveit"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-[14px] font-[700] text-[var(--c-ink)] transition-colors hover:text-[var(--c-accent)]"
