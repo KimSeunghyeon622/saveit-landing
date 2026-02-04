@@ -145,14 +145,14 @@ export default function SaveItLanding() {
         nextRev = revMin + ((nextRev - revMax) % revRange);
       }
       revenueRef.current = nextRev;
-      setRollingRevenue(Math.floor(nextRev));
+      setRollingRevenue(Math.floor(nextRev / 100_000) * 100_000);
 
       let nextAov = aovRef.current + aovSpeed * dt;
       if (nextAov > aovMax) {
         nextAov = aovMin + ((nextAov - aovMax) % aovRange);
       }
       aovRef.current = nextAov;
-      setRollingAov(Math.floor(nextAov));
+      setRollingAov(Math.floor(nextAov / 1_000) * 1_000);
 
       let nextNew = newCustRef.current + newSpeed * dt;
       if (nextNew > newMax) {
