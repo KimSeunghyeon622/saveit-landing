@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -141,6 +141,30 @@ function Card({
 export default function SaveItLanding() {
   const MAX = TOKENS.layout.maxWidth;
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [rollingRevenue, setRollingRevenue] = useState(500_000);
+  const rollingValueRef = useRef(500_000);
+  const lastTimeRef = useRef<number | null>(null);
+  useEffect(() => {
+    const min = 500_000;
+    const max = 3_000_000;
+    const range = max - min;
+    const speed = 800_000; // amount per second
+    let raf = 0;
+    const tick = (time: number) => {
+      const last = lastTimeRef.current ?? time;
+      const dt = (time - last) / 1000;
+      lastTimeRef.current = time;
+      let next = rollingValueRef.current + speed * dt;
+      if (next > max) {
+        next = min + ((next - max) % range);
+      }
+      rollingValueRef.current = next;
+      setRollingRevenue(Math.floor(next));
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
   const cssVars = useMemo(
     () =>
       ({
@@ -216,7 +240,14 @@ export default function SaveItLanding() {
         <div className="mx-auto px-4 pt-8" style={{ maxWidth: MAX }}>
           <div className="grid gap-4 rounded-[22px] border border-[var(--c-border)] bg-[var(--c-surface)] px-6 py-5 md:grid-cols-3">
             {[
-              { label: "누적 파트너 수익", value: "45.2억+" },
+              {
+                label: "누적 파트너 수익",
+                value: (
+                  <span className="tabular-nums tracking-[0.04em]">
+                    {rollingRevenue.toLocaleString("ko-KR")}원
+                  </span>
+                ),
+              },
               { label: "절감된 탄소 배출량", value: "12,400kg" },
               { label: "재방문 고객 비율", value: "78.5%" },
             ].map((x, i) => (
@@ -258,10 +289,11 @@ export default function SaveItLanding() {
               },
               {
                 title: "평균 객단가 증가",
-                desc: "마감 할인으로 방문한 고객 중 약 40%가 추가 구매를 진행하며, 평균 추가 구매액은 ",
+                desc: "마감 할인으로 방문한 고객 중 ",
                 highlight: "13,000원+",
                 tone: "green",
                 icon: <Wallet className="h-5 w-5" />,
+                prefix: "약 40%가 추가 구매를 진행하며, 평균 추가 구매액은 ",
               },
               {
                 title: "ESG·지구 살리기",
@@ -284,6 +316,11 @@ export default function SaveItLanding() {
                 <h3 className="mt-6 text-[20px] font-[800]">{x.title}</h3>
                 <p className="mt-3 text-[14px] text-[var(--c-muted)]">
                   {x.desc}
+                  {"prefix" in x && x.prefix ? (
+                    <span className={x.tone === "green" ? "text-[#16A34A] font-[700]" : "text-[#F97316] font-[700]"}>
+                      {x.prefix}
+                    </span>
+                  ) : null}
                   <span className={x.tone === "green" ? "text-[#16A34A] font-[700]" : "text-[#F97316] font-[700]"}>
                     {x.highlight}
                   </span>
