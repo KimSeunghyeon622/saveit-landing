@@ -166,11 +166,11 @@ export default function SaveItLanding() {
           <motion.div {...fadeUp} className="space-y-6">
             <div className="inline-flex items-center gap-2 rounded-full bg-[#E9FBEF] px-4 py-2 text-[13px] font-[600] text-[#1B7A45]">
               <span className="h-2 w-2 rounded-full bg-[var(--c-primary)]" />
-              이미 2,500개 매장이 함께하고 있어요
+              100% 무료로 이용해보세요 !
             </div>
 
             <h1 className="text-[clamp(34px,3.9vw,56px)] font-[800] leading-[1.12] text-[var(--c-ink)]">
-              우리 매장의 남은 음식,
+              우리 매장의 재고 음식,
               <br />
               <span className="text-[var(--c-accent)]">새로운 수익</span>이 됩니다
             </h1>
@@ -182,7 +182,7 @@ export default function SaveItLanding() {
 
             <div className="flex flex-wrap gap-3">
               <Button variant="primary">
-                지금 바로 파트너 되기 <ArrowRight className="h-4 w-4" />
+                바로 신청하기 <ArrowRight className="h-4 w-4" />
               </Button>
               <Button variant="outline">
                 카카오 상담하기
@@ -220,7 +220,7 @@ export default function SaveItLanding() {
         <div className="mx-auto px-4" style={{ maxWidth: MAX }}>
           <motion.div {...fadeUp} className="text-center">
             <div className="text-[12px] font-[700] tracking-[0.25em] text-[var(--c-primary)]">BENEFITS</div>
-            <h2 className="mt-3 text-[clamp(24px,3vw,36px)] font-[800]">마감 할인 서비스, 왜 필요할까요?</h2>
+            <h2 className="mt-3 text-[clamp(24px,3vw,36px)] font-[800]">마감/재고 할인 서비스, 왜 필요할까요?</h2>
             <p className="mt-3 text-[14px] text-[var(--c-muted)]">
               식재료 낭비를 줄이는 가치 있는 활동이 동시에 매장 운영의 효율성을 극대화합니다.
             </p>
@@ -276,7 +276,7 @@ export default function SaveItLanding() {
               <h2 className="mt-3 text-[clamp(26px,3.2vw,38px)] font-[800]">3단계로 끝나는 판매 프로세스</h2>
             </motion.div>
             <motion.div {...fadeUp} className="text-[14px] text-[var(--c-muted)]">
-              매장 운영에 방해되지 않도록 아주 간단하게 설계되었습니다. 스마트폰 하나면 충분합니다.
+              매우 간단한 조작으로, 스마트폰 하나면 충분합니다.
             </motion.div>
           </div>
 
@@ -285,19 +285,19 @@ export default function SaveItLanding() {
               {
                 step: "01",
                 title: "상품 등록",
-                desc: "매일 남는 수량을 간편하게 입력하세요. 사진 한 장과 할인 가격만 설정하면 즉시 노출됩니다.",
+                desc: "매일 남는 수량을 간편하게 입력하세요. 제품과 가격, 수량만 설정하면 즉시 노출됩니다.",
                 icon: <Package className="h-5 w-5" />,
               },
               {
                 step: "02",
                 title: "고객 주문",
-                desc: "주변의 고객이 앱을 통해 주문하고 결제합니다. 사장님은 푸시 알림으로 확인만 하세요.",
+                desc: "주변의 고객이 앱을 통해 주문하고 결제합니다. 사장님은 제품만 준비해 주세요.",
                 icon: <Users className="h-5 w-5" />,
               },
               {
                 step: "03",
                 title: "픽업 완료",
-                desc: "고객이 매장에 직접 방문하여 픽업합니다. 대면 소통을 통해 고객과 신뢰를 쌓으세요.",
+                desc: "고객이 매장에 직접 방문하여 픽업합니다. 새로운 단골 고객을 만들어 보세요.",
                 icon: <Store className="h-5 w-5" />,
               },
             ].map((x) => (
@@ -320,9 +320,9 @@ export default function SaveItLanding() {
           <motion.div {...fadeUp}>
             <div className="text-[12px] font-[700] tracking-[0.25em] text-[var(--c-primary)]">OWNER FIRST</div>
             <h2 className="mt-3 text-[clamp(24px,3vw,36px)] font-[800]">
-              다양한 자영업 경험을 바탕으로 오직
+              오직 사장님 관점에서,
               <br className="hidden sm:block" />
-              업주 입장에서 편의성을 높였습니다
+              사장님 편의를 최대한 높였습니다
             </h2>
           </motion.div>
 
@@ -330,25 +330,25 @@ export default function SaveItLanding() {
             {[
               {
                 title: "일일 정산",
-                desc: "정산 대기 시간 없이 매일매일 깔끔하게 정산해 드립니다.",
+                desc: "판매 금액에 대한 정산 기간 없이, 당일 정산이 가능합니다.",
                 icon: <Wallet className="h-5 w-5" />,
                 tone: "#E9FBEF",
               },
               {
                 title: "판매 편의",
-                desc: "바쁜 영업 시간 중에도 3초면 상품 등록이 가능합니다.",
+                desc: "20초면 간단하게 상품 등록이 가능합니다.",
                 icon: <Store className="h-5 w-5" />,
                 tone: "#EEF6FF",
               },
               {
                 title: "저렴한 비용",
-                desc: "광고비와 입점비 부담 없이 합리적인 수수료로 시작하세요.",
+                desc: "광고/입점/판매 수수료 없이, 소정의 플랫폼 이용료면 충분합니다.",
                 icon: <TrendingUp className="h-5 w-5" />,
                 tone: "#FFF4E8",
               },
               {
                 title: "추가 고객",
-                desc: "매장 근처의 잠재 고객에게 우리 가게를 알릴 기회입니다.",
+                desc: "새로운 고객을 확보하여 지속적인 추가 매출을 높일 수 있습니다.",
                 icon: <Users className="h-5 w-5" />,
                 tone: "#F6EDFF",
               },
@@ -375,7 +375,7 @@ export default function SaveItLanding() {
                 <h3 className="mt-4 text-[clamp(26px,3vw,36px)] font-[800] leading-[1.25]">
                   "마감 시간마다 버려지던
                   <br />
-                  빵들이 이제는 효자 상품이
+                  반찬들이 이제 효자 상품이
                   <br />
                   되었어요. 환경도 지키고
                   <br />
@@ -386,15 +386,15 @@ export default function SaveItLanding() {
                     <Leaf className="h-5 w-5" />
                   </span>
                   <div>
-                    <div className="font-[700] text-white">김민지 대표</div>
-                    <div>아뜰리에 베이커리 성수점</div>
+                    <div className="font-[700] text-white">김내현 대표</div>
+                    <div>OOO 반찬 전문점</div>
                   </div>
                 </div>
               </div>
               <div className="grid gap-4 md:grid-cols-2">
                 {[
-                  { label: "월 평균 수익", value: "+120만원", labelTone: "text-[var(--c-primary)]" },
-                  { label: "폐기율 감소", value: "92%", labelTone: "text-[var(--c-accent)]" },
+                  { label: "월 평균 수익", value: "+80만 원", labelTone: "text-[var(--c-primary)]" },
+                  { label: "폐기율 감소", value: "45%", labelTone: "text-[var(--c-accent)]" },
                 ].map((x) => (
                   <div key={x.label} className="rounded-[22px] border border-white/10 bg-white/5 p-6">
                     <div className={cn("text-[13px]", x.labelTone)}>{x.label}</div>
@@ -437,9 +437,9 @@ export default function SaveItLanding() {
               <div>
                 <div className="text-[12px] font-[700] tracking-[0.25em] text-[var(--c-primary)]">START NOW</div>
                 <h2 className="mt-3 text-[clamp(26px,3.2vw,38px)] font-[800] leading-[1.2]">
-                  1분 만에 입점하고
+                  지금 무료로 입점하고, 
                   <br />
-                  수익을 만들어보세요
+                  추가 매출을 만드세요
                 </h2>
                 <div className="mt-6 grid gap-3 text-[14px] text-[var(--c-ink)]">
                   {["입점비 0원", "광고비 0원"].map((x) => (
@@ -519,17 +519,17 @@ export default function SaveItLanding() {
               <div>자주 묻는 질문</div>
               <div>공지사항</div>
               <div>1:1 문의</div>
-              <div className="pt-2 text-[15px] font-[800] text-[var(--c-ink)]">1588-0000</div>
-              <div className="text-[12px]">평일 09:00 - 18:00 (주말 공휴일 제외)</div>
+              <div className="pt-2 text-[15px] font-[800] text-[var(--c-ink)]">010-5636-7386 </div>
+              <div className="text-[12px]">평일 10:00 - 22:00 (주말 공휴일 포함)</div>
             </div>
 
             <div className="space-y-3 text-[13px] text-[var(--c-muted)]">
               <div className="text-[14px] font-[700] text-[var(--c-ink)]">사업자 정보</div>
-              <div>상호명: (주)세이브잇코리아</div>
-              <div>대표자: 홍길동</div>
-              <div>사업자번호: 000-00-00000</div>
-              <div>주소: 서울특별시 강남구 테헤란로 123 세이브타워</div>
-              <div>이메일: partner@saveit.co.kr</div>
+              <div>상호명: 비비(BB)컴퍼니</div>
+              <div>대표자: 김민지</div>
+              <div>사업자번호: 350-33-01601</div>
+              <div>주소: 경기도 성남시 분당구 정자동 7, 두산위브파빌리온</div>
+              <div>이메일: bb_career@naver.com</div>
             </div>
           </div>
 
