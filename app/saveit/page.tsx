@@ -47,69 +47,7 @@ function cn(...xs: Array<string | undefined | false>) {
   return xs.filter(Boolean).join(" ");
 }
 
-function svgDataUri(svg: string) {
-  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-}
-
-const HERO_IMAGE = svgDataUri(`
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0E2A33" />
-      <stop offset="100%" stop-color="#1C3C39" />
-    </linearGradient>
-    <radialGradient id="glow" cx="0.15" cy="0.2" r="0.9">
-      <stop offset="0%" stop-color="#2AD27F" stop-opacity="0.28" />
-      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
-    </radialGradient>
-  </defs>
-  <rect width="900" height="900" fill="url(#glow)" />
-  <rect x="70" y="70" width="760" height="760" rx="54" fill="url(#bg)" />
-
-  <!-- shop counter -->
-  <rect x="150" y="520" width="600" height="160" rx="18" fill="#102B30" />
-  <rect x="170" y="540" width="560" height="120" rx="16" fill="#15353A" />
-  <rect x="170" y="500" width="560" height="50" rx="14" fill="#234A48" />
-
-  <!-- banchan trays -->
-  <g>
-    <rect x="210" y="510" width="110" height="60" rx="10" fill="#2C5C5A" />
-    <rect x="330" y="510" width="110" height="60" rx="10" fill="#2C5C5A" />
-    <rect x="450" y="510" width="110" height="60" rx="10" fill="#2C5C5A" />
-    <rect x="570" y="510" width="110" height="60" rx="10" fill="#2C5C5A" />
-    <circle cx="265" cy="540" r="16" fill="#FF7A59" />
-    <circle cx="385" cy="540" r="16" fill="#F6C453" />
-    <circle cx="505" cy="540" r="16" fill="#66D27A" />
-    <circle cx="625" cy="540" r="16" fill="#FFB14A" />
-  </g>
-
-  <!-- customer -->
-  <circle cx="560" cy="350" r="40" fill="#FFD7B5" />
-  <rect x="520" y="390" width="90" height="130" rx="24" fill="#4A8B73" />
-  <rect x="500" y="420" width="40" height="90" rx="18" fill="#3A6F5E" />
-  <rect x="600" y="410" width="40" height="100" rx="18" fill="#3A6F5E" />
-  <rect x="610" y="360" width="28" height="50" rx="8" fill="#2E3A46" />
-  <rect x="615" y="368" width="18" height="32" rx="4" fill="#0E1626" />
-
-  <!-- pickup bag -->
-  <rect x="265" y="420" width="110" height="120" rx="16" fill="#1FAE63" />
-  <rect x="285" y="400" width="70" height="28" rx="12" fill="#1A8B50" />
-  <rect x="290" y="430" width="60" height="12" rx="6" fill="#0E1626" opacity="0.35" />
-
-  <!-- counter staff -->
-  <circle cx="320" cy="350" r="36" fill="#FFD7B5" />
-  <rect x="290" y="382" width="90" height="120" rx="22" fill="#2F6C5C" />
-
-  <!-- ground shadow -->
-  <ellipse cx="450" cy="700" rx="260" ry="40" fill="#0A1D22" opacity="0.7" />
-
-  <!-- decorative bubbles -->
-  <g fill="#FFFFFF" opacity="0.15">
-    <circle cx="200" cy="180" r="42" />
-    <circle cx="680" cy="220" r="26" />
-  </g>
-</svg>
-`);
+const HERO_IMAGE = "/saveit-hero.png";
 
 function Button({
   variant = "primary",
@@ -697,7 +635,7 @@ export default function SaveItLanding() {
                     카카오톡 상담하기
                   </Button>
                 </div>
-                <div className="mt-auto pt-4 text-center text-[13px] font-[700] text-[var(--c-muted)] max-w-[260px] mx-auto">
+                <div className="mt-auto pt-4 text-center text-[14px] font-[700] text-[var(--c-muted)] whitespace-nowrap mx-auto">
                   신청 완료 후 담당자가 24시간 이내에 연락드립니다.
                 </div>
               </Card>
