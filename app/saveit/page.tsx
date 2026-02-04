@@ -542,7 +542,7 @@ export default function SaveItLanding() {
                 href="/saveit/terms"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[14px] font-[700] text-[var(--c-ink)] transition-colors hover:text-[var(--c-accent)]"
+                className="block text-[14px] font-[700] text-[var(--c-ink)] transition-colors hover:text-[var(--c-accent)]"
               >
                 이용약관
               </a>
@@ -550,7 +550,7 @@ export default function SaveItLanding() {
                 href="/saveit/privacy"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[14px] font-[700] text-[var(--c-ink)] transition-colors hover:text-[var(--c-accent)]"
+                className="block text-[14px] font-[700] text-[var(--c-ink)] transition-colors hover:text-[var(--c-accent)]"
               >
                 개인정보처리방침
               </a>
