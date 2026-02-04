@@ -203,7 +203,7 @@ export default function SaveItLanding() {
               >
                 바로 신청하기 <ArrowRight className="h-4 w-4" />
               </Button>
-              <Button variant="outline" href="https://open.kakao.com/o/gb2ZqRei">
+              <Button variant="kakao" href="https://open.kakao.com/o/gb2ZqRei">
                 카카오 상담하기
               </Button>
             </div>
@@ -485,7 +485,10 @@ export default function SaveItLanding() {
                   추가 매출을 만드세요
                 </h2>
                 <div className="mt-6 grid gap-3 text-[14px] text-[var(--c-ink)]">
-                  {["입점비 0원", "광고비 0원"].map((x) => (
+                  {[
+                    "입점비 0원 · 이용료 0원",
+                    "광고비 0원 · 수수료 0원",
+                  ].map((x) => (
                     <div key={x} className="flex items-center gap-2 font-[700]">
                       <span className="grid h-5 w-5 place-items-center rounded-full bg-[var(--c-primary)] text-white">
                         <Check className="h-3 w-3" />
@@ -535,9 +538,22 @@ export default function SaveItLanding() {
         <div className="mx-auto px-4 py-12" style={{ maxWidth: MAX }}>
           <div className="grid gap-10 md:grid-cols-[1fr_2fr]">
             <div className="space-y-3 text-[13px] text-[var(--c-muted)]">
-              <div className="text-[14px] font-[700] text-[var(--c-ink)]">이용약관</div>
-              <div className="text-[14px] font-[700] text-[var(--c-ink)]">개인정보처리방침</div>
-              <div className="text-[14px] font-[700] text-[var(--c-ink)]">사업자정보</div>
+              <a
+                href="/saveit/terms"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[14px] font-[700] text-[var(--c-ink)] transition-colors hover:text-[var(--c-accent)]"
+              >
+                이용약관
+              </a>
+              <a
+                href="/saveit/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[14px] font-[700] text-[var(--c-ink)] transition-colors hover:text-[var(--c-accent)]"
+              >
+                개인정보처리방침
+              </a>
             </div>
 
             <div className="space-y-3 text-[13px] text-[var(--c-muted)]">
