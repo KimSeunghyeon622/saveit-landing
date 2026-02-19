@@ -199,6 +199,11 @@ export default function SaveItLanding() {
       <section id="hero" className="pt-16 pb-8 md:pt-20">
         <div className="mx-auto grid gap-10 px-4 md:grid-cols-[1.05fr_0.95fr] md:items-center" style={{ maxWidth: MAX }}>
           <motion.div {...fadeUp} className="space-y-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#B8F2CF] bg-[#F4FFF8] px-4 py-2 text-[13px] font-[800] text-[#0F8A45] shadow-[0_6px_20px_rgba(0,213,99,0.12)]">
+              <span className="h-2 w-2 rounded-full bg-[var(--c-primary)]" />
+              오늘득템
+            </div>
+
             <div className="inline-flex items-center gap-2 rounded-full bg-[#E9FBEF] px-4 py-2 text-[13px] font-[600] text-[#1B7A45]">
               <span className="h-2 w-2 rounded-full bg-[var(--c-primary)]" />
               100% 무료로 이용해보세요 !
