@@ -636,8 +636,9 @@ export default function SaveItLanding() {
             </div>
 
             <div className="space-y-3 text-[13px] text-[var(--c-muted)]">
-              <div>상호명: 비비(BB)컴퍼니</div>
-              <div>대표자: 김민지</div>
+              <div>대표자: 비비(BB)컴퍼니는 통신판매중개자로서 통신판매의 당사자가 아니며 개별 판매자가 제공하는 서비스에 대한 이행, 계약사항 등과 관련한 의무와 책임은 거래당사자에게 있습니다.
+</div>
+              <div>상호명: 비비(BB)컴퍼니,  대표자: 김민지</div> 
               <div>사업자번호: 350-33-01601</div>
               <div>주소: 경기도 성남시 분당구 정자동 7, 두산위브파빌리온</div>
               <div>이메일: bb_career@naver.com</div>
