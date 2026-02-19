@@ -199,7 +199,7 @@ export default function SaveItLanding() {
       <div className="pointer-events-none absolute left-0 top-0 z-20 w-full">
         <div className="mx-auto px-4" style={{ maxWidth: MAX }}>
           <div className="flex h-[88px] w-[min(360px,92vw)] items-center">
-            <span className="text-[clamp(34px,4.4vw,54px)] font-[900] leading-none tracking-[-0.04em] text-[#4F46E5]">
+            <span className="text-[clamp(34px,4.4vw,54px)] font-[900] leading-none tracking-[-0.04em] text-[var(--c-primary)]">
               오늘득템
             </span>
           </div>
