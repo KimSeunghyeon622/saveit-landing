@@ -233,7 +233,7 @@ export default function SaveItLanding() {
               >
                 바로 신청하기 <ArrowRight className="h-4 w-4" />
               </Button>
-              <Button variant="kakao" href="https://open.kakao.com/o/gb2ZqRei">
+              <Button variant="kakao" href="https://open.kakao.com/o/gbf2Fupi">
                 카카오 상담하기
               </Button>
             </div>
@@ -609,7 +609,7 @@ export default function SaveItLanding() {
                   >
                     지금 바로 입점 신청하기
                   </Button>
-                  <Button variant="kakao" href="https://open.kakao.com/o/gb2ZqRei">
+                  <Button variant="kakao" href="https://open.kakao.com/o/gbf2Fupi">
                     <MessageCircle className="h-4 w-4" />
                     카카오톡 상담하기
                   </Button>
