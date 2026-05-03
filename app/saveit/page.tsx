@@ -9,10 +9,10 @@ import {
   Check,
   ChevronDown,
   Copy,
-  Download,
   Leaf,
   MessageCircle,
   Package,
+  Share2,
   Smartphone,
   Store,
   TrendingUp,
@@ -118,6 +118,7 @@ export default function SaveItLanding() {
   const MAX = TOKENS.layout.maxWidth;
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [copiedQr, setCopiedQr] = useState<string | null>(null);
+  const [sharingQr, setSharingQr] = useState<string | null>(null);
   const [rollingRevenue, setRollingRevenue] = useState(500_000);
   const [rollingAov, setRollingAov] = useState(11_000);
   const [rollingNewCust, setRollingNewCust] = useState(30);
@@ -209,6 +210,39 @@ export default function SaveItLanding() {
     } catch {
       window.open(src, "_blank", "noopener,noreferrer");
     }
+  };
+
+  const shareQrImage = async (platform: string, label: string, src: string, fileName: string) => {
+    const url = `${window.location.origin}${src}`;
+    const title = `${label} 앱 다운로드 QR`;
+    const text = "앱 다운로드 QR 코드입니다.";
+    setSharingQr(platform);
+
+    try {
+      if (navigator.share) {
+        try {
+          const response = await fetch(src);
+          const blob = await response.blob();
+          const file = new File([blob], fileName, { type: blob.type || "image/png" });
+          const fileShareData: ShareData = { title, text, files: [file] };
+          if (!navigator.canShare || navigator.canShare(fileShareData)) {
+            await navigator.share(fileShareData);
+            return;
+          }
+        } catch (error) {
+          if (error instanceof DOMException && error.name === "AbortError") return;
+        }
+
+        await navigator.share({ title, text, url });
+        return;
+      }
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") return;
+    } finally {
+      setSharingQr(null);
+    }
+
+    await copyQrLink(platform, src);
   };
 
   return (
@@ -421,7 +455,7 @@ export default function SaveItLanding() {
               {
                 step: "02",
                 title: "고객 주문",
-                desc: "주변의 고객이 앱을 통해 주문하고 결제합니다. 사장님은 제품만 준비해 주세요.",
+                desc: "주변의 고객이 앱을 통해 주문하고, 매장에 방문에 제품 수령과 함께 결제합니다.",
                 icon: <Users className="h-5 w-5" />,
               },
               {
@@ -699,14 +733,14 @@ export default function SaveItLanding() {
                             <Copy className="h-3.5 w-3.5" />
                             {copiedQr === item.platform ? "복사됨" : "링크 복사"}
                           </button>
-                          <a
-                            href={item.src}
-                            download={item.fileName}
+                          <button
+                            type="button"
+                            onClick={() => shareQrImage(item.platform, item.label, item.src, item.fileName)}
                             className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full bg-[var(--c-ink)] text-[12px] font-[800] text-white shadow-[0_6px_16px_rgba(15,23,42,0.12)] transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--c-accent)]"
                           >
-                            <Download className="h-3.5 w-3.5" />
-                            이미지 저장
-                          </a>
+                            <Share2 className="h-3.5 w-3.5" />
+                            {sharingQr === item.platform ? "준비중" : "공유하기"}
+                          </button>
                         </div>
                       </div>
                     ))}
