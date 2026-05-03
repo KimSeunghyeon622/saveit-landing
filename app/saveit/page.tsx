@@ -8,7 +8,6 @@ import {
   ArrowRight,
   Check,
   ChevronDown,
-  Copy,
   Leaf,
   MessageCircle,
   Package,
@@ -117,7 +116,6 @@ function Card({
 export default function SaveItLanding() {
   const MAX = TOKENS.layout.maxWidth;
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-  const [copiedQr, setCopiedQr] = useState<string | null>(null);
   const [sharingQr, setSharingQr] = useState<string | null>(null);
   const [rollingRevenue, setRollingRevenue] = useState(500_000);
   const [rollingAov, setRollingAov] = useState(11_000);
@@ -188,30 +186,6 @@ export default function SaveItLanding() {
     []
   );
 
-  const copyQrLink = async (platform: string, src: string) => {
-    const url = `${window.location.origin}${src}`;
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(url);
-      } else {
-        const textarea = document.createElement("textarea");
-        textarea.value = url;
-        textarea.style.position = "fixed";
-        textarea.style.left = "-9999px";
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textarea);
-      }
-      setCopiedQr(platform);
-      window.setTimeout(() => {
-        setCopiedQr((current) => (current === platform ? null : current));
-      }, 1800);
-    } catch {
-      window.open(src, "_blank", "noopener,noreferrer");
-    }
-  };
-
   const shareQrImage = async (platform: string, label: string, src: string, fileName: string) => {
     const url = `${window.location.origin}${src}`;
     const title = `${label} 앱 다운로드 QR`;
@@ -242,7 +216,7 @@ export default function SaveItLanding() {
       setSharingQr(null);
     }
 
-    await copyQrLink(platform, src);
+    window.open(src, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -683,6 +657,7 @@ export default function SaveItLanding() {
                       {
                         platform: "Android",
                         label: "안드로이드용",
+                        storeUrl: "https://play.google.com/store/apps/details?id=com.bbcareer.todaydtem",
                         src: "/qr-android.png",
                         fileName: "saveit-android-qr.png",
                         icon: <Smartphone className="h-4 w-4" />,
@@ -691,6 +666,7 @@ export default function SaveItLanding() {
                       {
                         platform: "iOS",
                         label: "iOS용",
+                        storeUrl: "https://apps.apple.com/kr/app/id6759194471",
                         src: "/qr-ios.png",
                         fileName: "saveit-ios-qr.png",
                         icon: <Apple className="h-4 w-4" />,
@@ -705,10 +681,20 @@ export default function SaveItLanding() {
                           <span className={cn("grid h-8 w-8 place-items-center rounded-full", item.tone)}>
                             {item.icon}
                           </span>
-                          <div className="min-w-0">
-                            <div className="text-[13px] font-[800]">{item.platform}</div>
-                            <div className="text-[11px] text-[var(--c-muted)]">{item.label}</div>
-                          </div>
+                          <a
+                            href={item.storeUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`${item.label} 앱 설치 페이지로 이동`}
+                            className="group inline-block min-w-0 rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--c-accent)]"
+                          >
+                            <div className="text-[13px] font-[800] transition-colors group-hover:text-[var(--c-primary)]">
+                              {item.platform}
+                            </div>
+                            <div className="text-[11px] text-[var(--c-muted)] transition-colors group-hover:text-[var(--c-ink)]">
+                              {item.label}
+                            </div>
+                          </a>
                         </div>
                         <a
                           href={item.src}
@@ -724,19 +710,11 @@ export default function SaveItLanding() {
                             className="h-full w-full rounded-[10px] object-contain"
                           />
                         </a>
-                        <div className="mt-3 grid grid-cols-2 gap-2">
-                          <button
-                            type="button"
-                            onClick={() => copyQrLink(item.platform, item.src)}
-                            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full bg-white text-[12px] font-[800] text-[var(--c-ink)] shadow-[0_6px_16px_rgba(15,23,42,0.06)] transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--c-accent)]"
-                          >
-                            <Copy className="h-3.5 w-3.5" />
-                            {copiedQr === item.platform ? "복사됨" : "링크 복사"}
-                          </button>
+                        <div className="mt-3 flex justify-center">
                           <button
                             type="button"
                             onClick={() => shareQrImage(item.platform, item.label, item.src, item.fileName)}
-                            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full bg-[var(--c-ink)] text-[12px] font-[800] text-white shadow-[0_6px_16px_rgba(15,23,42,0.12)] transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--c-accent)]"
+                            className="inline-flex h-9 w-full max-w-[160px] items-center justify-center gap-1.5 rounded-full bg-[var(--c-ink)] text-[12px] font-[800] text-white shadow-[0_6px_16px_rgba(15,23,42,0.12)] transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--c-accent)]"
                           >
                             <Share2 className="h-3.5 w-3.5" />
                             {sharingQr === item.platform ? "준비중" : "공유하기"}
