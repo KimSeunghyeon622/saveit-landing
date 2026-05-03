@@ -1,14 +1,17 @@
 "use client";
 
 import React, { useMemo, useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
+  Apple,
   ArrowRight,
   Check,
   ChevronDown,
   Leaf,
   MessageCircle,
   Package,
+  Smartphone,
   Store,
   TrendingUp,
   Users,
@@ -242,7 +245,14 @@ export default function SaveItLanding() {
           <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.08 }}>
             <div className="rounded-[30px] bg-white p-4" style={{ boxShadow: TOKENS.shadow.md }}>
               <div className="overflow-hidden rounded-[26px] bg-[#0F2C32]">
-                <img src={HERO_IMAGE} alt="hero" className="h-[340px] w-full object-cover" />
+                <Image
+                  src={HERO_IMAGE}
+                  alt="hero"
+                  width={960}
+                  height={680}
+                  priority
+                  className="h-[340px] w-full object-cover"
+                />
               </div>
             </div>
           </motion.div>
@@ -438,7 +448,7 @@ export default function SaveItLanding() {
                 desc: "광고/입점/판매 수수료 없이, 소정의 플랫폼 이용료면 충분합니다.",
                 icon: <TrendingUp className="h-5 w-5" />,
                 tone: "#FFF4E8",
-                note: "이용료 3개월 무료 제공중",
+                note: "9/30 까지 무료 이용 가능",
               },
               {
                 title: "추가 고객",
@@ -470,13 +480,13 @@ export default function SaveItLanding() {
               <div>
                 <div className="text-[14px] font-[700] text-[var(--c-primary)]">Partner Story</div>
                 <h3 className="mt-4 text-[clamp(26px,3vw,36px)] font-[800] leading-[1.25]">
-                  "마감 시간마다 버려지던
+                  &ldquo;마감 시간마다 버려지던
                   <br />
                   반찬들이 이제 효자 상품이
                   <br />
                   되었어요. 환경도 지키고
                   <br />
-                  수익도 나니 일석이조죠."
+                  수익도 나니 일석이조죠.&rdquo;
                 </h3>
                 <div className="mt-6 flex items-center gap-3 text-[14px] text-white/70">
                   <span className="grid h-10 w-10 place-items-center rounded-full bg-white/10">
@@ -535,7 +545,7 @@ export default function SaveItLanding() {
               },
               {
                 q: "가입 및 시작 비용이 있나요?",
-                a: "구독 서비스로 월 이용료가 있으나, 본 사이트를 통해 신청하시면 3개월 무료 이용이 가능합니다.",
+                a: "가입/입점/판매 수수료 일체 없이, 9/30까지 무료로 이용 가능합니다. 10월부터 이용 시, 오직 월 이용료 19,800원이면 충분합니다.",
               },
             ].map((item, i) => (
               <Card key={item.q} className="border-transparent" style={{ boxShadow: TOKENS.shadow.sm }}>
@@ -587,15 +597,60 @@ export default function SaveItLanding() {
                     </div>
                   ))}
                 </div>
-                <div className="mt-8 rounded-[20px] border border-[var(--c-border)] bg-white px-5 py-4">
-                  <div className="flex items-center gap-4">
-                    <div className="grid h-14 w-14 place-items-center rounded-[14px] border border-[var(--c-border)] bg-[var(--c-surface)]">
-                      <span className="text-[12px] text-[var(--c-muted)]">QR</span>
-                    </div>
+                <div className="mt-8 rounded-[24px] border border-[var(--c-border)] bg-white p-5">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                     <div>
-                      <div className="text-[14px] font-[700]">앱 다운로드</div>
-                      <div className="text-[12px] text-[var(--c-muted)]">QR 코드를 스캔하여 파트너 앱을 설치하세요</div>
+                      <div className="text-[15px] font-[800]">앱 다운로드</div>
+                      <div className="mt-1 text-[12px] text-[var(--c-muted)]">
+                        휴대폰 카메라로 QR 코드를 스캔해 파트너 앱을 설치하세요.
+                      </div>
                     </div>
+                    <div className="inline-flex w-fit whitespace-nowrap rounded-full bg-[#E9FBEF] px-3 py-1 text-[11px] font-[800] text-[#16844A]">
+                      Android / iOS
+                    </div>
+                  </div>
+
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                    {[
+                      {
+                        platform: "Android",
+                        label: "안드로이드용",
+                        src: "/qr-android.png",
+                        icon: <Smartphone className="h-4 w-4" />,
+                        tone: "bg-[#E9FBEF] text-[#16844A]",
+                      },
+                      {
+                        platform: "iOS",
+                        label: "iOS용",
+                        src: "/qr-ios.png",
+                        icon: <Apple className="h-4 w-4" />,
+                        tone: "bg-[#EEF6FF] text-[#2563EB]",
+                      },
+                    ].map((item) => (
+                      <div
+                        key={item.platform}
+                        className="min-w-0 rounded-[18px] border border-[#EEF1F5] bg-[var(--c-surface)] p-3"
+                      >
+                        <div className="mb-3 flex items-center gap-2">
+                          <span className={cn("grid h-8 w-8 place-items-center rounded-full", item.tone)}>
+                            {item.icon}
+                          </span>
+                          <div className="min-w-0">
+                            <div className="text-[13px] font-[800]">{item.platform}</div>
+                            <div className="text-[11px] text-[var(--c-muted)]">{item.label}</div>
+                          </div>
+                        </div>
+                        <div className="mx-auto aspect-square w-full max-w-[160px] rounded-[16px] border border-white bg-white p-2 shadow-[0_10px_24px_rgba(15,23,42,0.08)]">
+                          <Image
+                            src={item.src}
+                            alt={`${item.label} 앱 다운로드 QR 코드`}
+                            width={320}
+                            height={320}
+                            className="h-full w-full rounded-[10px] object-contain"
+                          />
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
