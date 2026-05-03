@@ -8,6 +8,8 @@ import {
   ArrowRight,
   Check,
   ChevronDown,
+  Copy,
+  Download,
   Leaf,
   MessageCircle,
   Package,
@@ -115,6 +117,7 @@ function Card({
 export default function SaveItLanding() {
   const MAX = TOKENS.layout.maxWidth;
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [copiedQr, setCopiedQr] = useState<string | null>(null);
   const [rollingRevenue, setRollingRevenue] = useState(500_000);
   const [rollingAov, setRollingAov] = useState(11_000);
   const [rollingNewCust, setRollingNewCust] = useState(30);
@@ -183,6 +186,30 @@ export default function SaveItLanding() {
       }) as React.CSSProperties,
     []
   );
+
+  const copyQrLink = async (platform: string, src: string) => {
+    const url = `${window.location.origin}${src}`;
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+      } else {
+        const textarea = document.createElement("textarea");
+        textarea.value = url;
+        textarea.style.position = "fixed";
+        textarea.style.left = "-9999px";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+      }
+      setCopiedQr(platform);
+      window.setTimeout(() => {
+        setCopiedQr((current) => (current === platform ? null : current));
+      }, 1800);
+    } catch {
+      window.open(src, "_blank", "noopener,noreferrer");
+    }
+  };
 
   return (
     <div style={cssVars} className="relative min-h-screen overflow-x-hidden bg-[var(--c-bg)] text-[var(--c-ink)]">
@@ -545,7 +572,8 @@ export default function SaveItLanding() {
               },
               {
                 q: "가입 및 시작 비용이 있나요?",
-                a: "가입/입점/판매 수수료 일체 없이, 9/30까지 무료로 이용 가능합니다. 10월부터 이용 시, 오직 월 이용료 19,800원이면 충분합니다.",
+                strongA: "가입/입점/판매 수수료 일체 없이, 9/30까지 무료로 이용 가능합니다.",
+                a: "10월부터 이용 시, 오직 월 이용료 19,800원이면 충분합니다.",
               },
             ].map((item, i) => (
               <Card key={item.q} className="border-transparent" style={{ boxShadow: TOKENS.shadow.sm }}>
@@ -564,7 +592,16 @@ export default function SaveItLanding() {
                   />
                 </button>
                 {openFaq === i && (
-                  <div className="px-6 pb-5 text-[14px] text-[var(--c-muted)]">{item.a}</div>
+                  <div className="px-6 pb-5 text-[14px] text-[var(--c-muted)]">
+                    {"strongA" in item ? (
+                      <>
+                        <div className="font-[800] text-[var(--c-ink)]">{item.strongA}</div>
+                        <div className="mt-1">{item.a}</div>
+                      </>
+                    ) : (
+                      item.a
+                    )}
+                  </div>
                 )}
               </Card>
             ))}
@@ -601,9 +638,6 @@ export default function SaveItLanding() {
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                     <div>
                       <div className="text-[15px] font-[800]">앱 다운로드</div>
-                      <div className="mt-1 text-[12px] text-[var(--c-muted)]">
-                        휴대폰 카메라로 QR 코드를 스캔해 파트너 앱을 설치하세요.
-                      </div>
                     </div>
                     <div className="inline-flex w-fit whitespace-nowrap rounded-full bg-[#E9FBEF] px-3 py-1 text-[11px] font-[800] text-[#16844A]">
                       Android / iOS
@@ -616,6 +650,7 @@ export default function SaveItLanding() {
                         platform: "Android",
                         label: "안드로이드용",
                         src: "/qr-android.png",
+                        fileName: "saveit-android-qr.png",
                         icon: <Smartphone className="h-4 w-4" />,
                         tone: "bg-[#E9FBEF] text-[#16844A]",
                       },
@@ -623,6 +658,7 @@ export default function SaveItLanding() {
                         platform: "iOS",
                         label: "iOS용",
                         src: "/qr-ios.png",
+                        fileName: "saveit-ios-qr.png",
                         icon: <Apple className="h-4 w-4" />,
                         tone: "bg-[#EEF6FF] text-[#2563EB]",
                       },
@@ -640,7 +676,12 @@ export default function SaveItLanding() {
                             <div className="text-[11px] text-[var(--c-muted)]">{item.label}</div>
                           </div>
                         </div>
-                        <div className="mx-auto aspect-square w-full max-w-[160px] rounded-[16px] border border-white bg-white p-2 shadow-[0_10px_24px_rgba(15,23,42,0.08)]">
+                        <a
+                          href={item.src}
+                          download={item.fileName}
+                          aria-label={`${item.label} QR 이미지 저장`}
+                          className="mx-auto block aspect-square w-full max-w-[160px] rounded-[16px] border border-white bg-white p-2 shadow-[0_10px_24px_rgba(15,23,42,0.08)] transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--c-accent)]"
+                        >
                           <Image
                             src={item.src}
                             alt={`${item.label} 앱 다운로드 QR 코드`}
@@ -648,6 +689,24 @@ export default function SaveItLanding() {
                             height={320}
                             className="h-full w-full rounded-[10px] object-contain"
                           />
+                        </a>
+                        <div className="mt-3 grid grid-cols-2 gap-2">
+                          <button
+                            type="button"
+                            onClick={() => copyQrLink(item.platform, item.src)}
+                            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full bg-white text-[12px] font-[800] text-[var(--c-ink)] shadow-[0_6px_16px_rgba(15,23,42,0.06)] transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--c-accent)]"
+                          >
+                            <Copy className="h-3.5 w-3.5" />
+                            {copiedQr === item.platform ? "복사됨" : "링크 복사"}
+                          </button>
+                          <a
+                            href={item.src}
+                            download={item.fileName}
+                            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full bg-[var(--c-ink)] text-[12px] font-[800] text-white shadow-[0_6px_16px_rgba(15,23,42,0.12)] transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--c-accent)]"
+                          >
+                            <Download className="h-3.5 w-3.5" />
+                            이미지 저장
+                          </a>
                         </div>
                       </div>
                     ))}
@@ -668,9 +727,6 @@ export default function SaveItLanding() {
                     <MessageCircle className="h-4 w-4" />
                     카카오톡 상담하기
                   </Button>
-                </div>
-                <div className="mt-auto pt-4 text-center text-[14px] font-[700] text-[var(--c-muted)] whitespace-nowrap mx-auto">
-                  신청 완료 후 담당자가 24시간 이내에 연락드립니다.
                 </div>
               </Card>
             </div>
