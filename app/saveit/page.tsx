@@ -657,43 +657,57 @@ export default function SaveItLanding() {
                       {
                         platform: "Android",
                         label: "안드로이드용",
+                        installLabel: "Android 설치",
+                        storeLabel: "Google Play로 이동",
                         storeUrl: "https://play.google.com/store/apps/details?id=com.bbcareer.todaydtem",
                         src: "/qr-android.png",
                         fileName: "saveit-android-qr.png",
                         icon: <Smartphone className="h-4 w-4" />,
                         tone: "bg-[#E9FBEF] text-[#16844A]",
+                        ctaTone: "bg-[#16A34A] text-white shadow-[0_10px_22px_rgba(22,163,74,0.22)] hover:bg-[#15803D]",
                       },
                       {
                         platform: "iOS",
                         label: "iOS용",
+                        installLabel: "iOS 설치",
+                        storeLabel: "App Store로 이동",
                         storeUrl: "https://apps.apple.com/kr/app/id6759194471",
                         src: "/qr-ios.png",
                         fileName: "saveit-ios-qr.png",
                         icon: <Apple className="h-4 w-4" />,
                         tone: "bg-[#EEF6FF] text-[#2563EB]",
+                        ctaTone: "bg-[#2563EB] text-white shadow-[0_10px_22px_rgba(37,99,235,0.22)] hover:bg-[#1D4ED8]",
                       },
                     ].map((item) => (
                       <div
                         key={item.platform}
                         className="min-w-0 rounded-[18px] border border-[#EEF1F5] bg-[var(--c-surface)] p-3"
                       >
-                        <div className="mb-3 flex items-center gap-2">
-                          <span className={cn("grid h-8 w-8 place-items-center rounded-full", item.tone)}>
-                            {item.icon}
-                          </span>
+                        <div className="mb-3 grid gap-2">
+                          <div className="flex items-center gap-2">
+                            <span className={cn("grid h-8 w-8 place-items-center rounded-full", item.tone)}>
+                              {item.icon}
+                            </span>
+                            <div className="min-w-0">
+                              <div className="text-[13px] font-[800]">{item.platform}</div>
+                              <div className="text-[11px] text-[var(--c-muted)]">{item.label}</div>
+                            </div>
+                          </div>
                           <a
                             href={item.storeUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label={`${item.label} 앱 설치 페이지로 이동`}
-                            className="group inline-block min-w-0 rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--c-accent)]"
+                            className={cn(
+                              "group inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full px-3 py-2 text-center text-[13px] font-[900] leading-tight transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--c-accent)]",
+                              item.ctaTone
+                            )}
                           >
-                            <div className="text-[13px] font-[800] transition-colors group-hover:text-[var(--c-primary)]">
-                              {item.platform}
-                            </div>
-                            <div className="text-[11px] text-[var(--c-muted)] transition-colors group-hover:text-[var(--c-ink)]">
-                              {item.label}
-                            </div>
+                            <span className="min-w-0">
+                              <span className="block">{item.installLabel}</span>
+                              <span className="block text-[10px] font-[700] opacity-85">{item.storeLabel}</span>
+                            </span>
+                            <ArrowRight className="h-3.5 w-3.5 shrink-0 transition-transform group-hover:translate-x-0.5" />
                           </a>
                         </div>
                         <a
